@@ -28,7 +28,7 @@ const PopularProduct = ({ populardata }: { populardata: any }) => {
                 </Box>
                 <div className="grid grid-cols-1 gy-4 md:grid-cols-2 lg:grid-cols-4">
                     {
-                        populardata?.slice(0, 8).map((pdata: any) =>
+                        populardata?.slice(0, 4).map((pdata: any) =>
                             <PopularProductsCard
                                 key={pdata._id}
                                 pdata={pdata}

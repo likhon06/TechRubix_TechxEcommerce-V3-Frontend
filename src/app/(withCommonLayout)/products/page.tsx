@@ -1,78 +1,81 @@
-import { Button, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+"use client"
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Pagination, Select, TextField } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
+import Box from '@mui/material/Box';
+import React, { useState } from 'react'
 import { IoMdAddCircleOutline } from 'react-icons/io';
-
+import SearchIcon from '@mui/icons-material/Search';
+import { SelectChangeEvent } from '@mui/material/Select';
 const productsPage = async () => {
-  const res = await fetch('http://localhost:5000/top-products', {
+  const res = await fetch('http://localhost:5000/products', {
     next: {
       revalidate: 30
     }
   });
   const FlashDatas = await res.json();
 
+  const handleChange = (event: SelectChangeEvent) => {
+    console.log(event.target.value);
+  };
+
+
   return (
 
-    <div className='flex ps-20'>
-      <div className='lg:w-3/5 '>
-        <div className=' hidden lg:block'>
-          <div className='w-3/5 mx-auto border border-gray-400 rounded-sm mt-12 p-4'>
-            <span className='font-bold'>|</span>  Price Range <br />
-            <div>
-              <FormGroup>
-                <FormControlLabel control={<Checkbox />} label="$10 - $20" />
-                <FormControlLabel control={<Checkbox />} label="$21 - $30" />
-                <FormControlLabel control={<Checkbox />} label="$31 - $50" />
-                <FormControlLabel control={<Checkbox />} label="$51 - $90" />
-              </FormGroup>
-            </div>
-          </div>
+    <div className='flex ps-4'>
+      <div className="drawer lg:drawer-open">
+        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content flex flex-col items-center justify-center">
+          {/* Page content here */}
+          <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">Open drawer</label>
 
-          <div className='w-3/5 mx-auto border border-gray-400 rounded-sm mt-12 p-4'>
-            <span className='font-bold'>|</span>  Categories <br />
-            <div>
-              <FormGroup>
-                <FormControlLabel control={<Checkbox />} label="Food" />
-                <FormControlLabel control={<Checkbox />} label="Drink" />
-                <FormControlLabel control={<Checkbox />} label="Dairy" />
-                <FormControlLabel control={<Checkbox />} label="Meat" />
-              </FormGroup>
-            </div>
+        </div>
+        <div className="drawer-side">
+          <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
+          <form action="">
+            <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+              <p className='mb-2 font-bold'>Select Price Range</p>
+              <label htmlFor="">start price</label>
+              <input type="text" placeholder="0" className="input input-bordered w-full max-w-xs mb-4" />
+              <label htmlFor="">end price</label>
+              <input type="text" placeholder="5000" className="input input-bordered w-full max-w-xs mb-4" />
 
-          </div>
-
-          <div className='w-3/5 mx-auto border border-gray-400 rounded-sm mt-12 p-4'>
-            <span className='font-bold'>|</span>  Ratings <br />
-            <div>
-              <FormGroup>
-                <FormControlLabel control={<Checkbox />} label="1 Star" />
-                <FormControlLabel control={<Checkbox />} label="2 Star" />
-                <FormControlLabel control={<Checkbox />} label="3 Star" />
-                <FormControlLabel control={<Checkbox />} label="4 Star" />
-                <FormControlLabel control={<Checkbox />} label="5 Star" />
-              </FormGroup>
-            </div>
-          </div>
-
+                <select className="select select-bordered w-full max-w-xs mb-4">
+                  <option selected>All Products</option>
+                  <option>motherboard</option>
+                  <option>graphics card</option>
+                  <option>powersupply</option>
+                  <option>monitor</option>
+                  <option>mouse</option>
+                  <option>keyboard</option>
+                  <option>headphone</option>
+                  <option>sdd</option>
+                  <option>hdd</option>
+                </select>
+              <p className='mb-2 font-bold'>Select Rating Range</p>
+              <label htmlFor="">start rating</label>
+              <input type="text" placeholder="0" className="input input-bordered w-full max-w-xs mb-4" />
+              <label htmlFor="">end rating</label>
+              <input type="text" placeholder="5" className="input input-bordered w-full max-w-xs mb-4" />
+              <Button variant="contained" sx={{ padding: '15px', backgroundColor: 'black', ":hover": {backgroundColor: "black"} }}>Search Products</Button>
+            </ul>
+          </form>
         </div>
       </div>
-
       <div className='mt-11'>
-        <div className='lg:hidden'>
-          <Button variant='contained'>Drawer</Button>
+        <div className='flex items-center justify-between w-3/4'>
+          <div>
+            <h1 className='text-3xl mt-4'>Our Collection Of Products</h1>
+            <p>Showing {FlashDatas.length} item(s) in the store</p>
+          </div>
         </div>
-
-        <h1 className='text-3xl mt-4'>Our Collection Of Products</h1>
-        <p>Showing {FlashDatas.length} item(s)</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         <div className="grid grid-cols-1 gy-4 md:grid-cols-2 lg:grid-cols-4 w-3/4">
           {
             FlashDatas.map((flashdata: any) => (
               <Link href={`/products/${flashdata._id}`} key={flashdata._id}>
                 <div className='rounded-2xl m-4 p-4 transition-all duration-300 hover:scale-105 mt-10'
                 >
-                  <div className=' overflow-hidden relative'>
+                  <div style={{ overflow: 'hidden', height: '150px', borderRadius: '10px' }} className=' overflow-hidden relative'>
                     <span className='bg-gray-800 absolute text-gray-100 px-1.5 py-0.5 rounded-2xl top-2 left-2'>-13%</span>
                     <Image src={flashdata.image}
                       width={1200}
@@ -81,11 +84,11 @@ const productsPage = async () => {
                       alt="flashsaleimages" />
                   </div>
                   <div className="w-76 mt-4">
-                    <h1>{flashdata.title}</h1>
+                    <h1>{flashdata.name}</h1>
                     <div className='flex justify-between items-center'>
                       <div className='flex gap-2'>
-                        <div><s>${flashdata.prevPrice}</s></div>
-                        <div>${flashdata.newPrice}</div>
+                        <div>${flashdata.regular_price}</div>
+                        <div>In stock: {flashdata.stock}</div>
                       </div>
                       <IoMdAddCircleOutline className='size-5 mr-4' />
                     </div>
@@ -95,9 +98,8 @@ const productsPage = async () => {
             ))
           }
         </div>
+        <Pagination count={10} color="primary" className='mt-12' />
       </div>
-
-
     </div>
 
   )

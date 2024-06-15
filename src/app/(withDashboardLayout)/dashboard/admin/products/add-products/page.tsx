@@ -6,7 +6,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
+import Textarea from '@mui/joy/Textarea';
+import Stack from '@mui/joy/Stack';
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -20,10 +21,14 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 type FormValues = {
-    title: string;
+    name: string;
     category: string;
-    previousPrice: string;
-    newPrice: string;
+    regular_price: string;
+    discount: string;
+    sale_price: string;
+    description: string;
+    flashsale: boolean;
+    stock: number;
     file: FileList;
 };
 
@@ -46,16 +51,18 @@ const AddProductPage = () => {
                 console.log("Image uploaded successfully:", result);
                 const supp = {
                     image: result.data.url,
-                    title: data.title,
+                    name: data.name,
                     category: data.category,
-                    prevPrice: data.previousPrice,
-                    newPrice: data.newPrice,
+                    regular_price: data.regular_price,
+                    sale_price: data.sale_price,
+                    discount: data.discount,
+                    description: data.description
                 };
 
                 console.log(supp);
 
                 try {
-                    const res = await fetch('http://localhost:5000/top-products', {
+                    const res = await fetch('http://localhost:5000/flash-products', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -66,7 +73,7 @@ const AddProductPage = () => {
                     if (res.ok) {
                         const result = await res.json();
                         console.log('Uploaded', result);
-                        toast.success(`${data.title} Uploaded Successfully`)
+                        toast.success(`${data.name} Uploaded Successfully`)
                         router.push(`/dashboard`);
                     } else {
                         console.error('Error uploading:', res.statusText);
@@ -84,16 +91,46 @@ const AddProductPage = () => {
 
     return (
         <>
-            <Box sx={{ marginTop: "100px" }}>
+            <Box sx={{ marginTop: "" }}>
                 <Typography sx={{
-                    fontWeight : "600px"
+                    fontWeight: '500px',
+                    fontFamily: ''
                 }}>Add Product</Typography>
                 <Box component="form" className='mt-5' onSubmit={handleSubmit(onSubmit)}>
                     <Box className='grid grid-cols-1'>
-                        <TextField fullWidth label="Title" {...register("title")} id="title" />
-                        <TextField sx={{ marginTop: "20px" }} fullWidth {...register("category")} label="Category" id="category" />
-                        <TextField sx={{ marginTop: "20px" }} fullWidth {...register("previousPrice")} label="Previous Price" id="previousPrice" />
-                        <TextField sx={{ marginTop: "20px" }} {...register("newPrice")} fullWidth label="New Price" id="newPrice" />
+                        <Box className='grid grid-cols-2 gap-4 items-start'>
+                            <TextField label="Name" {...register("name")} id="name" />
+                            <TextField sx={{ marginTop: "" }} fullWidth  {...register("category")} label="Category" id="category" />
+                            <TextField sx={{ marginTop: "20px" }}  {...register("regular_price")} label="Regular Price" id="regularprice" />
+                            <TextField sx={{ marginTop: "20px" }} {...register("sale_price")} label="Sale Price" id="saleprice" />
+                            <TextField sx={{ marginTop: "20px" }}  {...register("flashsale")} label="Flash Sale" id="flashsale" />
+                            <TextField sx={{ marginTop: "20px" }} {...register("stock")} label="Stock" id="stock" />
+                        </Box>
+                        <Textarea
+                            minRows={6}
+                            placeholder="Description type in here…"
+                            sx={{
+                                '&::before': {
+                                    border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                    transform: 'scaleX(0)',
+                                    left: '2.5px',
+                                    right: '2.5px',
+                                    bottom: 0,
+                                    top: 'unset',
+                                    transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                    borderRadius: 0,
+                                    borderBottomLeftRadius: '64px 20px',
+                                    borderBottomRightRadius: '64px 20px',
+                                },
+                                '&:focus-within::before': {
+                                    transform: 'scaleX(1)',
+                                },
+                                marginTop: '20px'
+                            }}
+                            {...register("description")}
+                        />
+                        <TextField sx={{ marginTop: "20px" }} {...register("discount")} label="Discount" id="discount" />
+
                         <Button
                             component="label"
                             variant="contained"
@@ -110,7 +147,7 @@ const AddProductPage = () => {
                             variant='contained'
                             fullWidth
                             type="submit"
-                            
+
                         >
                             Submit
                         </Button>

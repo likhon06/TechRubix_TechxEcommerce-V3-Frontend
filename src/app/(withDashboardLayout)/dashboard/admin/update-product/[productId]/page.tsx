@@ -30,7 +30,7 @@ const UpdateProductPage = async () => {
     return (
         <>
             <Box sx={{
-                marginTop: "100px"
+                marginTop: ""
             }}>
                 <Typography sx={{
                     marginBottom: "20px",

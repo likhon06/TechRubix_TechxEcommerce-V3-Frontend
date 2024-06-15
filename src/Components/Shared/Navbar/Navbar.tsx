@@ -20,7 +20,6 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
 const pages = {
-  'Categories': 'categories',
   'Products': 'products',
   'Flashsale': 'flashsale',
   'About Us': 'aboutus',
@@ -83,8 +82,10 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position="static" variant="outlined" sx={{
+      backgroundColor: "black"
+    }}>
+      <Container maxWidth="lg" >
         <Toolbar disableGutters>
 
           <Typography
@@ -95,7 +96,7 @@ const Navbar = () => {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
+              fontFamily: 'roboto',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
@@ -105,9 +106,11 @@ const Navbar = () => {
             <Typography
               fontSize="27px"
               fontWeight={550}
-            >Grocery<span
-              className="text-emerald-500"
-            >Store</span></Typography>
+              sx={{
+                color: '#ff9a00'
+              }}
+              color="warning"
+            >TechRubix</Typography>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -166,9 +169,11 @@ const Navbar = () => {
             <Typography
               fontSize="27px"
               fontWeight={550}
-            >Grocery<span
-              className="text-emerald-500"
-            >Store</span></Typography>
+              sx={{
+                color: '#ff9a00'
+              }}
+              color="warning"
+            >TechRubix</Typography>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {entries.map(([key, value]) => (
@@ -206,7 +211,7 @@ const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {entries_two.map(([key, value]) => (
-                    <Link key={key} href={key === 'Cart' ? `/${value}/user/my-orders` :`/${value}` }>
+                    <Link key={key} href={key === 'Cart' ? `/${value}/user/my-orders` : `/${value}`}>
                       <MenuItem key={key} onClick={handleCloseUserMenu}>
                         {
                           <Typography textAlign="center">
@@ -214,9 +219,9 @@ const Navbar = () => {
                           </Typography>
                         }
                         {
-                        
-                        <Typography textAlign="center">
-                            {key ==='Cart' ? <ShoppingCartIcon/> : '' }
+
+                          <Typography textAlign="center">
+                            {key === 'Cart' ? <ShoppingCartIcon /> : ''}
                           </Typography>
                         }
                         {
@@ -233,7 +238,10 @@ const Navbar = () => {
                 </Menu>
               </Box>
               :
-              <Link href={`/login`}>Login</Link>
+              <Link href={`/login`}><Button variant="contained" sx={{
+                paddingLeft: '30px', paddingRight: '30px',
+                paddingTop: '10px', paddingBottom: '10px'
+              }} color="warning">Login</Button></Link>
           }
         </Toolbar>
       </Container>

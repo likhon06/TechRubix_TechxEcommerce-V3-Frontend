@@ -16,6 +16,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
@@ -131,9 +132,9 @@ export const DDrawer = () => {
                     email: string;
                     role: string;
                 } = jwtDecode(storedToken);
-                setUserEmail(decodedToken.email);
-                setUserRole(decodedToken.role)
-                console.log(decodedToken);
+                setUserEmail(decodedToken?.email);
+                setUserRole(decodedToken?.role)
+                console.log(decodedToken?.role);
             } catch (error) {
                 console.error('Invalid token', error);
             }
@@ -145,7 +146,7 @@ export const DDrawer = () => {
         <Box sx={{ display: 'flex', justifyContent: 'between' }}>
             <CssBaseline />
             <AppBar position="fixed" open={open}>
-                <Toolbar sx={{ backgroundColor: 'red', display: 'flex' }}>
+                <Toolbar sx={{ backgroundColor: 'black', display: 'flex' }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -175,9 +176,10 @@ export const DDrawer = () => {
                 </DrawerHeader>
                 <Divider />
                 {
-                    isAdminCheckByEmail?.role ?
+
+                    isAdminCheckByEmail?.role === 'admin' ?
                         <List>
-                            {['Add Products', 'All Product', 'All User', 'Home'].map((text, index) => (
+                            {['Dashboard','Add Products', 'All Product', 'All User', 'Home'].map((text, index) => (
                                 <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                                     <ListItemButton
                                         sx={{
@@ -195,18 +197,23 @@ export const DDrawer = () => {
                                                 }}
                                             >
                                                 {
-                                                    index === 0 && <Link href={'/dashboard/admin/products/add-products'}><AddIcon /></Link>
+                                                    index === 0 && <Link href={'/dashboard'}><DashboardIcon /></Link>
                                                 }
                                                 {
-                                                    index === 1 && <Link href={'/dashboard/admin/products'}><CategoryIcon /></Link>
+                                                    index === 1 && <Link href={'/dashboard/admin/products/add-products'}><AddIcon /></Link>
                                                 }
                                                 {
-                                                    index === 2 && <Link href={'/dashboard/admin/all-users'}><PeopleIcon /></Link>
+                                                    index === 2 && <Link href={'/dashboard/admin/products'}><CategoryIcon /></Link>
                                                 }
                                                 {
-                                                    index === 3 && <Link href={'/'}><HomeIcon /></Link>
+                                                    index === 3 && <Link href={'/dashboard/admin/all-users'}><PeopleIcon /></Link>
                                                 }
+                                                {
+                                                    index === 4 && <Link href={'/'}><HomeIcon /></Link>
+                                                }
+                                                
                                             </ListItemIcon>
+                                            
                                         }
                                         <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                                     </ListItemButton>

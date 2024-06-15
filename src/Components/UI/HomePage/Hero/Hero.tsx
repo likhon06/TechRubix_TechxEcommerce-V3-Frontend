@@ -1,7 +1,5 @@
 "use client"
 import Image from "next/image"
-import bannerImg1 from '@/assets/images/c1.jpg'
-import bannerImg2 from '@/assets/images/c2.jpg'
 import { Typography } from "@mui/material"
 import { Carousel } from "@material-tailwind/react"
 import { useEffect } from "react"
@@ -24,22 +22,50 @@ const Hero = () => {
   return (
 
     <>
-      <div className="glide-06 relative w-3/4 mx-auto overflow-hidden rounded-lg mt-10">
+      <div className="glide-06 relative w-full mx-auto overflow-hidden">
         {/*    <!-- Slides --> */}
         <div className="overflow-hidden" data-glide-el="track">
           <ul className="whitespace-no-wrap flex-no-wrap [backface-visibility: hidden] [transform-style: preserve-3d] [touch-action: pan-Y] [will-change: transform] relative flex w-full overflow-hidden p-0">
+
             <li>
-              <Image src={bannerImg1} alt="banner image"
-                width={1500}
-                height={200}
+              <Image src="https://dlcdnwebimgs.asus.com/gain/F913AABE-A7FC-4997-9490-F1EF4FF734DA/fwebp" alt="banner image" className="overflow-hidden h-[60vh] object-cover"
+                width={2000}
+                height={400}
               />
             </li>
             <li>
-              <Image src={bannerImg2} alt="banner image"
-                width={1500}
-                height={200}
+              <Image src="https://dlcdnwebimgs.asus.com/gain/5F92407A-A9AD-48B5-9117-6DB04B6431A9/fwebp" alt="banner image" className="overflow-hidden h-[60vh] object-cover"
+                width={2000}
+                height={400}
               />
             </li>
+            <li>
+              <Image src="https://dlcdnwebimgs.asus.com/gain/EFC25057-77EB-4531-905F-2D75B3FDC298/fwebp" alt="banner image" className="overflow-hidden h-[60vh] object-cover"
+                width={2000}
+                height={400}
+              />
+            </li>
+            <li>
+              <Image src="https://dlcdnwebimgs.asus.com/gain/3BADD312-0E9D-4C2C-BC7C-8C205E8324ED/fwebp" alt="banner image" className="overflow-hidden h-[60vh] object-cover"
+                width={2000}
+                height={400}
+              />
+            </li>
+
+            <li>
+              <Image src="https://dlcdnwebimgs.asus.com/gain/AD829375-EE30-44B0-A8B2-F0D4309B54FC/fwebp" alt="banner image" className="overflow-hidden h-[60vh] object-cover"
+                width={2000}
+                height={400}
+              />
+            </li>
+
+            <li>
+              <Image src="https://dlcdnwebimgs.asus.com/gain/1AE907C1-3EC7-43D1-95C8-48318C6C2260/fwebp" alt="banner image" className="overflow-hidden h-[60vh] object-cover"
+                width={2000}
+                height={400}
+              />
+            </li>
+            
           </ul>
         </div>
         {/*    <!-- Controls --> */}

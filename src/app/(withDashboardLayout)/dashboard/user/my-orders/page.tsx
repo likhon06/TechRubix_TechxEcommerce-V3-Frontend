@@ -31,7 +31,7 @@ const AllUsersPage = async () => {
   });
   const cartDatas = await res.json();
   return (
-    <Box className='mt-24'>
+    <Box className=''>
       <TableContainer component={Paper} style={{
         tableLayout: "fixed", width: "100%",
       }}>
