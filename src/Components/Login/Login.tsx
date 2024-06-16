@@ -15,6 +15,7 @@ import { useLoginPostMutation } from '@/redux/features/login.post';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { z } from "zod";
+import { useLogin } from './useLogin';
 
 function Copyright(props: any) {
     return (
@@ -49,7 +50,6 @@ const userSchema = z.object({
 
 const Login = () => {
     const router = useRouter();
-    const [LoginPostData] = useLoginPostMutation();
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -58,18 +58,15 @@ const Login = () => {
             password: data.get('password'),
         };
         const userDataLogin = userSchema.parse(loginUserData);
-        const res = await LoginPostData(userDataLogin) as LogResponse;
-        if (res?.data?.success) {
-            toast.success("Login successful!");
-            localStorage.setItem('Token', res?.data?.token);
+        const res = await useLogin(userDataLogin);
+        console.log(res)
+        if (res && res.success === true) {
+            localStorage.setItem('Token', res?.token);
+            toast.success('login successful!');
             router.push('/');
-        } else {
-            toast.error("Something went wrong!");
         }
     };
-
     return (
-
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box

@@ -58,6 +58,7 @@ const Navbar = () => {
 
   const [token, setToken] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -67,8 +68,10 @@ const Navbar = () => {
       try {
         const decodedToken: {
           email: string;
+          role: string;
         } = jwtDecode(storedToken);
         setUserEmail(decodedToken.email);
+        setIsAdmin(decodedToken.role);
       } catch (error) {
         console.error('Invalid token', error);
       }
@@ -211,7 +214,7 @@ const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {entries_two.map(([key, value]) => (
-                    <Link key={key} href={key === 'Cart' ? `/${value}/user/my-orders` : `/${value}`}>
+                     <Link key={key} href={key === 'Cart' && isAdmin !== 'admin' ? `/${value}/user/my-orders` : ``}>
                       <MenuItem key={key} onClick={handleCloseUserMenu}>
                         {
                           <Typography textAlign="center">

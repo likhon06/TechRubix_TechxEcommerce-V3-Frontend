@@ -3,22 +3,32 @@ import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel,
 import Image from 'next/image';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoMdAddCircleOutline } from 'react-icons/io';
 import SearchIcon from '@mui/icons-material/Search';
 import { SelectChangeEvent } from '@mui/material/Select';
-const productsPage = async () => {
-  const res = await fetch('http://localhost:5000/products', {
-    next: {
-      revalidate: 30
-    }
-  });
-  const FlashDatas = await res.json();
+const productsPage = () => {
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/products?page=${page}`);
+        const result = await response.json();
+        setProducts(result.data);
+        setTotalPages(result.totalPages);
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      }
+    };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value);
+    fetchProducts();
+  }, [page]);
+
+  const handlePageChange = (event :any , value:any) => {
+    setPage(value);
   };
-
 
   return (
 
@@ -57,7 +67,7 @@ const productsPage = async () => {
               <input type="text" placeholder="0" className="input input-bordered w-full max-w-xs mb-4" />
               <label htmlFor="">end rating</label>
               <input type="text" placeholder="5" className="input input-bordered w-full max-w-xs mb-4" />
-              <Button variant="contained" sx={{ padding: '15px', backgroundColor: 'black', ":hover": {backgroundColor: "black"} }}>Search Products</Button>
+              <Button type="submit" variant="contained" sx={{ padding: '15px', backgroundColor: 'black', ":hover": {backgroundColor: "black"} }}>Search Products</Button>
             </ul>
           </form>
         </div>
@@ -66,17 +76,17 @@ const productsPage = async () => {
         <div className='flex items-center justify-between w-3/4'>
           <div>
             <h1 className='text-3xl mt-4'>Our Collection Of Products</h1>
-            <p>Showing {FlashDatas.length} item(s) in the store</p>
+            <p>Showing {products.length} item(s) in the store</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gy-4 md:grid-cols-2 lg:grid-cols-4 w-3/4">
           {
-            FlashDatas.map((flashdata: any) => (
+            products.map((flashdata: any) => (
               <Link href={`/products/${flashdata._id}`} key={flashdata._id}>
                 <div className='rounded-2xl m-4 p-4 transition-all duration-300 hover:scale-105 mt-10'
                 >
                   <div style={{ overflow: 'hidden', height: '150px', borderRadius: '10px' }} className=' overflow-hidden relative'>
-                    <span className='bg-gray-800 absolute text-gray-100 px-1.5 py-0.5 rounded-2xl top-2 left-2'>-13%</span>
+                    <span className='bg-gray-800 absolute text-gray-100 px-1.5 py-0.5 rounded-2xl top-2 left-2'>{flashdata?.flashsale === 'true'? `-${flashdata?.discount}$` : ''}</span>
                     <Image src={flashdata.image}
                       width={1200}
                       height={200}
@@ -98,7 +108,8 @@ const productsPage = async () => {
             ))
           }
         </div>
-        <Pagination count={10} color="primary" className='mt-12' />
+        <Pagination count={totalPages} page={page}
+        onChange={handlePageChange} color="primary" className='mt-12' />
       </div>
     </div>
 
