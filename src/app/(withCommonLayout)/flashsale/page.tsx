@@ -5,9 +5,7 @@ import Link from 'next/link';
 import Box from '@mui/material/Box';
 import React, { useEffect, useState } from 'react'
 import { IoMdAddCircleOutline } from 'react-icons/io';
-import SearchIcon from '@mui/icons-material/Search';
-import { SelectChangeEvent } from '@mui/material/Select';
-const productsPage = () => {
+const flashProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -32,18 +30,58 @@ const productsPage = () => {
 
   return (
 
-    <div className='flex ps-4'>
+    <div className=''>
+      <label htmlFor="my-drawer-2" className="btn bg-gray-900 mt-2 text-white hover:bg-gray-800 drawer-button lg:hidden">Search Products</label>
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-center justify-center">
-          {/* Page content here */}
-          <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">Open drawer</label>
+        <div className='mt-11'>
+        <div className='flex items-center justify-between w-3/4'>
+          <div>
+            <h1 className='text-3xl mt-4'>Our Collection Of Products</h1>
+            <p>Showing {products.length*totalPages} item(s) in the store</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gy-4 md:grid-cols-2 lg:grid-cols-4 w-3/4">
+          {
+            products.map((flashdata: any) => (
+              <Link href={`/products/${flashdata._id}`} key={flashdata._id}>
+                <div className='rounded-2xl m-4 p-4 transition-all duration-300 hover:scale-105 mt-10'
+                >
+                  <div style={{ overflow: 'hidden', height: '150px', borderRadius: '10px' }} className=' overflow-hidden relative'>
+                    <span className='bg-gray-800 absolute text-gray-100 px-1.5 py-0.5 rounded-2xl top-2 left-2'>{flashdata?.flashsale === 'true'? `-${flashdata?.discount}$` : ''}</span>
+                    <Image src={flashdata.image}
+                      width={1200}
+                      height={200}
+                      className='rounded-2xl'
+                      alt="flashsaleimages" />
+                  </div>
+                  <div className="w-76 mt-4">
+                    <h1>{flashdata.name}</h1>
+                    <div className='flex justify-between items-center'>
+                      <div className='flex gap-2'>
+                        <div>${flashdata.regular_price}</div>
+                        <div>In stock: {flashdata.stock}</div>
+                      </div>
+                      <IoMdAddCircleOutline className='size-5 mr-4' />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))
+          }
+        </div>
+        <Pagination count={totalPages} page={page}
+        onChange={handlePageChange} color="primary" className='mt-12' />
+      </div>
+          
+
 
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
           <form action="">
-            <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+            <ul className="menu p-4 w-80 min-h-full bg-base-200 h-screen text-base-content">
               <p className='mb-2 font-bold'>Select Price Range</p>
               <label htmlFor="">start price</label>
               <input type="text" placeholder="0" className="input input-bordered w-full max-w-xs mb-4" />
@@ -72,48 +110,9 @@ const productsPage = () => {
           </form>
         </div>
       </div>
-      <div className='mt-11'>
-        <div className='flex items-center justify-between w-3/4'>
-          <div>
-            <h1 className='text-3xl mt-4'>Our Collection Of Products</h1>
-            <p>Showing {products.length} item(s) in the store</p>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 gy-4 md:grid-cols-2 lg:grid-cols-4 w-3/4">
-          {
-            products.map((flashdata: any) => (
-              <Link href={`/products/${flashdata._id}`} key={flashdata._id}>
-                <div className='rounded-2xl m-4 p-4 transition-all duration-300 hover:scale-105 mt-10'
-                >
-                  <div style={{ overflow: 'hidden', height: '150px', borderRadius: '10px' }} className=' overflow-hidden relative'>
-                    <span className='bg-gray-800 absolute text-gray-100 px-1.5 py-0.5 rounded-2xl top-2 left-2'>-13%</span>
-                    <Image src={flashdata.image}
-                      width={1200}
-                      height={200}
-                      className='rounded-2xl'
-                      alt="flashsaleimages" />
-                  </div>
-                  <div className="w-76 mt-4">
-                    <h1>{flashdata.name}</h1>
-                    <div className='flex justify-between items-center'>
-                      <div className='flex gap-2'>
-                        <div>${flashdata.regular_price}</div>
-                        <div>In stock: {flashdata.stock}</div>
-                      </div>
-                      <IoMdAddCircleOutline className='size-5 mr-4' />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))
-          }
-        </div>
-        <Pagination count={totalPages} page={page}
-        onChange={handlePageChange} color="primary" className='mt-12' />
-      </div>
     </div>
 
   )
 }
 
-export default productsPage
+export default flashProductsPage

@@ -5,8 +5,6 @@ import Link from 'next/link';
 import Box from '@mui/material/Box';
 import React, { useEffect, useState } from 'react'
 import { IoMdAddCircleOutline } from 'react-icons/io';
-import SearchIcon from '@mui/icons-material/Search';
-import { SelectChangeEvent } from '@mui/material/Select';
 const productsPage = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
@@ -32,47 +30,12 @@ const productsPage = () => {
 
   return (
 
-    <div className='flex ps-4'>
+    <div className=''>
+      <label htmlFor="my-drawer-2" className="btn bg-gray-900 mt-2 text-white hover:bg-gray-800 drawer-button lg:hidden">Search Products</label>
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-center justify-center">
-          {/* Page content here */}
-          <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">Open drawer</label>
-
-        </div>
-        <div className="drawer-side">
-          <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-          <form action="">
-            <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-              <p className='mb-2 font-bold'>Select Price Range</p>
-              <label htmlFor="">start price</label>
-              <input type="text" placeholder="0" className="input input-bordered w-full max-w-xs mb-4" />
-              <label htmlFor="">end price</label>
-              <input type="text" placeholder="5000" className="input input-bordered w-full max-w-xs mb-4" />
-
-                <select className="select select-bordered w-full max-w-xs mb-4">
-                  <option selected>All Products</option>
-                  <option>motherboard</option>
-                  <option>graphics card</option>
-                  <option>powersupply</option>
-                  <option>monitor</option>
-                  <option>mouse</option>
-                  <option>keyboard</option>
-                  <option>headphone</option>
-                  <option>sdd</option>
-                  <option>hdd</option>
-                </select>
-              <p className='mb-2 font-bold'>Select Rating Range</p>
-              <label htmlFor="">start rating</label>
-              <input type="text" placeholder="0" className="input input-bordered w-full max-w-xs mb-4" />
-              <label htmlFor="">end rating</label>
-              <input type="text" placeholder="5" className="input input-bordered w-full max-w-xs mb-4" />
-              <Button type="submit" variant="contained" sx={{ padding: '15px', backgroundColor: 'black', ":hover": {backgroundColor: "black"} }}>Search Products</Button>
-            </ul>
-          </form>
-        </div>
-      </div>
-      <div className='mt-11'>
+        <div className='mt-11'>
         <div className='flex items-center justify-between w-3/4'>
           <div>
             <h1 className='text-3xl mt-4'>Our Collection Of Products</h1>
@@ -110,6 +73,42 @@ const productsPage = () => {
         </div>
         <Pagination count={totalPages} page={page}
         onChange={handlePageChange} color="primary" className='mt-12' />
+      </div>
+          
+
+
+        </div>
+        <div className="drawer-side">
+          <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
+          <form action="">
+            <ul className="menu p-4 w-80 min-h-full bg-base-200 h-screen text-base-content">
+              <p className='mb-2 font-bold'>Select Price Range</p>
+              <label htmlFor="">start price</label>
+              <input type="text" placeholder="0" className="input input-bordered w-full max-w-xs mb-4" />
+              <label htmlFor="">end price</label>
+              <input type="text" placeholder="5000" className="input input-bordered w-full max-w-xs mb-4" />
+
+                <select className="select select-bordered w-full max-w-xs mb-4">
+                  <option selected>All Products</option>
+                  <option>motherboard</option>
+                  <option>graphics card</option>
+                  <option>powersupply</option>
+                  <option>monitor</option>
+                  <option>mouse</option>
+                  <option>keyboard</option>
+                  <option>headphone</option>
+                  <option>sdd</option>
+                  <option>hdd</option>
+                </select>
+              <p className='mb-2 font-bold'>Select Rating Range</p>
+              <label htmlFor="">start rating</label>
+              <input type="text" placeholder="0" className="input input-bordered w-full max-w-xs mb-4" />
+              <label htmlFor="">end rating</label>
+              <input type="text" placeholder="5" className="input input-bordered w-full max-w-xs mb-4" />
+              <Button type="submit" variant="contained" sx={{ padding: '15px', backgroundColor: 'black', ":hover": {backgroundColor: "black"} }}>Search Products</Button>
+            </ul>
+          </form>
+        </div>
       </div>
     </div>
 
