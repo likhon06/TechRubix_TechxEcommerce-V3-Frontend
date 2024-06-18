@@ -277,8 +277,7 @@ const Navbar = () => {
                               },
                               width: '200px'
                             }}>
-                              {icon}
-                              <span style={{ marginLeft: '10px' }}>{label}</span>
+                              <h1 onClick={handleLogout}>{icon}<span style={{ marginLeft: '10px' }}>{label}</span></h1>
                             </Typography>
                           </Link>
                         </MenuItem>
@@ -287,7 +286,7 @@ const Navbar = () => {
                       user_entries.map(([key, { label, icon, link }]) => (
                         <MenuItem key={key} onClick={handleCloseUserMenu}>
                           <Link href={link}>
-                            <Typography sx={{
+                            <Typography  sx={{
                               paddingLeft: '30px', paddingRight: '30px', paddingTop: '10px', paddingBottom: '10px',
                               ":hover": {
                                 backgroundColor: 'black',
@@ -296,8 +295,7 @@ const Navbar = () => {
                               },
                               width: '200px'
                             }}>
-                              {icon}
-                              <span style={{ marginLeft: '10px' }}>{label}</span>
+                            <h1 onClick={handleLogout}>{icon}<span style={{ marginLeft: '10px' }}>{label}</span></h1>
                             </Typography>
                           </Link>
                         </MenuItem>
