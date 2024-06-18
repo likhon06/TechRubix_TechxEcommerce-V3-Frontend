@@ -12,7 +12,7 @@ const override: CSSProperties = {
     borderColor: "red",
 };
   
-const productShowPage = () => {
+const ProductShowPage = () => {
     const [tableProducts, setTableProducts] = useState([]);
     let [color, setColor] = useState("#ffffff");
     const [loading, setLoading] = useState(true);
@@ -141,4 +141,4 @@ const productShowPage = () => {
     )
 }
 
-export default productShowPage
+export default ProductShowPage

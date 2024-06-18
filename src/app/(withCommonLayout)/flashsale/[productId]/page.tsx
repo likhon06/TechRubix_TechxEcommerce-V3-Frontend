@@ -1,5 +1,5 @@
 "use client"
-import { useAddCart } from '@/Components/AddProductIntoCart/useAddCart';
+import { AddCart } from '@/Components/AddProductIntoCart/AddCart';
 import { Rating } from '@mui/material';
 import { jwtDecode } from 'jwt-decode';
 import Image from 'next/image';
@@ -11,7 +11,7 @@ interface JwtPayload {
   role: string
 }
 
-const page = async ({ params }: { params: any }) => {
+const FlashSaleProductId = async ({ params }: { params: any }) => {
   const res = await fetch(`https://tr-ecom-backend.vercel.app/products/${params?.productId}`, {
     next: {
       revalidate: 30
@@ -31,7 +31,7 @@ const page = async ({ params }: { params: any }) => {
       }
 
       if (Role !== 'admin') {
-        const res = await useAddCart(datas);
+        const res = await AddCart(datas);
         if (res.result.acknowledged === true) {
           toast.success(`${name} added in your cart successfully`)
         } else {
@@ -90,4 +90,4 @@ const page = async ({ params }: { params: any }) => {
   )
 }
 
-export default page
+export default FlashSaleProductId

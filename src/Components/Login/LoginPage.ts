@@ -1,6 +1,6 @@
 "use server"
 import {cookies} from 'next/headers'
-export const useLogin = async(data: any) => {
+export const LoginPage = async(data: any) => {
    try{
       const res = await fetch('http:localhost:5000/api/auth/login', {
          method: 'POST',

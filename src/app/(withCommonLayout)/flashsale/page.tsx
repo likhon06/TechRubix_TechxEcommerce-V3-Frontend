@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Box from '@mui/material/Box';
 import React, { useEffect, useState } from 'react'
 import { IoMdAddCircleOutline } from 'react-icons/io';
-const flashProductsPage = () => {
+const FlashProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -115,4 +115,4 @@ const flashProductsPage = () => {
   )
 }
 
-export default flashProductsPage
+export default FlashProductsPage

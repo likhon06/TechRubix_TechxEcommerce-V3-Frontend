@@ -1,5 +1,5 @@
 "use server"
-export const useAddCart = async(data: any) => {
+export const AddCart = async(data: any) => {
    console.log(data);
    try{
       const res = await fetch('http:localhost:5000/add/cart', {

@@ -3,7 +3,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-const dashboardPage = () => {
+const UserDashboardPage = () => {
 
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [totalCartData, setTotalCartData] = useState<string | null>(null);
@@ -59,4 +59,4 @@ const dashboardPage = () => {
 }
 
 
-export default dashboardPage;
+export default UserDashboardPage;

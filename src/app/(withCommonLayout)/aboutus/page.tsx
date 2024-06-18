@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 const aboutusPage = () => {
@@ -5,7 +6,7 @@ const aboutusPage = () => {
     <div className="sm:flex items-center max-w-screen-xl">
       <div className="sm:w-1/2 p-10">
         <div className="image object-center text-center">
-          <img src="https://i.imgur.com/WbQnbas.png" alt=""/>
+          <Image height={1200} width={800} src="https://i.imgur.com/WbQnbas.png" alt=""/>
         </div>
       </div>
       <div className="sm:w-1/2 p-5">
