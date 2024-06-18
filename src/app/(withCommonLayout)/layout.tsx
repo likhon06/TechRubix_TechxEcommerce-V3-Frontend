@@ -19,7 +19,6 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
             <Toaster />
             <div>
-                <NextTopLoader />
                 {children}
             </div>
             <Footer />
