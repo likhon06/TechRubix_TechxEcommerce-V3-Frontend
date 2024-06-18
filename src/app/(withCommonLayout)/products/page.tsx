@@ -12,7 +12,7 @@ const productsPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/products?page=${page}`);
+        const response = await fetch(`https://tr-ecom-backend.vercel.app/products?page=${page}`);
         const result = await response.json();
         setProducts(result.data);
         setTotalPages(result.totalPages);

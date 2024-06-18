@@ -1,7 +1,7 @@
 
 
 export const dataLoadByEmail = async(userEmail : string) => {
-    const res = await fetch(`http://localhost:5000/user/${userEmail}`, {
+    const res = await fetch(`https://tr-ecom-backend.vercel.app/user/${userEmail}`, {
         next: {
             revalidate: 1
         }

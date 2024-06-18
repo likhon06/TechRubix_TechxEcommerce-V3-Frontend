@@ -62,7 +62,7 @@ const AddProductPage = () => {
                 console.log(supp);
 
                 try {
-                    const res = await fetch('http://localhost:5000/flash-products', {
+                    const res = await fetch('https://tr-ecom-backend.vercel.app/flash-products', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

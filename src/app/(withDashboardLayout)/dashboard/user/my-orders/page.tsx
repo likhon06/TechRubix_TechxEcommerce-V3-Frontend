@@ -46,7 +46,7 @@ const AllUsersPage = () => {
     const fetchCart = async () => {
       if (userEmail) {
         try {
-          const res = await fetch(`http://localhost:5000/cart/${userEmail}`, {
+          const res = await fetch(`https://tr-ecom-backend.vercel.app/cart/${userEmail}`, {
             next: {
               revalidate: 1,
             },
@@ -72,7 +72,7 @@ const AllUsersPage = () => {
       if (productId.length > 0) {
         try {
           const fetchProduct = async (id:any) => {
-            const res = await fetch(`http://localhost:5000/products/${id}`, {
+            const res = await fetch(`https://tr-ecom-backend.vercel.app/products/${id}`, {
               next: { revalidate: 1 },
             });
             const singleData = await res.json();
@@ -94,7 +94,7 @@ const AllUsersPage = () => {
   }, [productId]);
   const handleDelete = async (id: string) => {
     try {
-      await fetch(`http://localhost:5000/delete-user/${id}`, {
+      await fetch(`https://tr-ecom-backend.vercel.app/delete-user/${id}`, {
         method: 'DELETE',
       });
     } catch (error) {
@@ -104,7 +104,7 @@ const AllUsersPage = () => {
 
   const handleUpdate = async (id: string, updatedData: any) => {
     try {
-      await fetch(`http://localhost:5000/update-user/${id}`, {
+      await fetch(`https://tr-ecom-backend.vercel.app/update-user/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

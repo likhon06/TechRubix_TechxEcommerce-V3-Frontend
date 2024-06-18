@@ -1,7 +1,7 @@
 import React from 'react'
 
 const ReviewPage = async({params} : {params : any}) => {
-    const res = await fetch(`http://localhost:5000/products/${params?.productId}/reviews`,{
+    const res = await fetch(`https://tr-ecom-backend.vercel.app/products/${params?.productId}/reviews`,{
         next : {
           revalidate:1
         }

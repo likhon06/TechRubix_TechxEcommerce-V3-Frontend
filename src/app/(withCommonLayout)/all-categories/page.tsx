@@ -3,7 +3,7 @@ import PopularProductsCard from '@/Components/UI/HomePage/PopularProductsCard/Po
 import React from 'react'
 
 const allCategoryPage = async() => {
-    const res = await fetch('http://localhost:5000/top-products')
+    const res = await fetch('https://tr-ecom-backend.vercel.app/top-products')
     const populardata = await res.json();
     return (
         <>

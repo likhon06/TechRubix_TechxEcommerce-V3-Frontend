@@ -12,7 +12,7 @@ const AllUsersPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch('http://localhost:5000/all-users', {
+                const res = await fetch('https://tr-ecom-backend.vercel.app/all-users', {
                     next: {
                         revalidate: 1
                     }
@@ -32,7 +32,7 @@ const AllUsersPage = () => {
 
     const handleDelete = async (id: string) => {
         try {
-            await fetch(`http://localhost:5000/delete-user/${id}`, {
+            await fetch(`https://tr-ecom-backend.vercel.app/delete-user/${id}`, {
                 method: 'DELETE',
             });
         } catch (error) {
@@ -42,7 +42,7 @@ const AllUsersPage = () => {
 
     const handleUpdate = async (id: string, updatedData: any) => {
         try {
-            await fetch(`http://localhost:5000/update-user/${id}`, {
+            await fetch(`https://tr-ecom-backend.vercel.app/update-user/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

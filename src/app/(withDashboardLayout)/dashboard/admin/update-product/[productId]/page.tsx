@@ -20,7 +20,7 @@ const UpdateProductPage = async () => {
         console.log(data);
     }
 
-    const res = await fetch(`http://localhost:5000/update-products/${productId}`, {
+    const res = await fetch(`https://tr-ecom-backend.vercel.app/update-products/${productId}`, {
         next: {
             revalidate: 1
         }

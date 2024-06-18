@@ -12,7 +12,7 @@ interface JwtPayload {
 }
 
 const page = async ({ params }: { params: any }) => {
-  const res = await fetch(`http://localhost:5000/products/${params?.productId}`, {
+  const res = await fetch(`https://tr-ecom-backend.vercel.app/products/${params?.productId}`, {
     next: {
       revalidate: 30
     }
