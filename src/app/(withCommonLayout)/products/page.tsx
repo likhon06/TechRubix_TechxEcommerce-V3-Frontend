@@ -76,7 +76,7 @@ const productsPage = () => {
         <div className='flex items-center justify-between w-3/4'>
           <div>
             <h1 className='text-3xl mt-4'>Our Collection Of Products</h1>
-            <p>Showing {products.length} item(s) in the store</p>
+            <p>Showing {products.length*totalPages} item(s) in the store</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gy-4 md:grid-cols-2 lg:grid-cols-4 w-3/4">

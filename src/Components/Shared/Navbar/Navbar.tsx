@@ -1,6 +1,5 @@
 "use client"
 import Link from "next/link"
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { jwtDecode } from 'jwt-decode';
@@ -18,7 +17,11 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'; // profile
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'; // account
+import DashboardIcon from '@mui/icons-material/Dashboard'; // dashboard
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'; // cart
+import LogoutIcon from '@mui/icons-material/Logout'; // logout
 const pages = {
   'Products': 'products',
   'Flashsale': 'flashsale',
@@ -27,14 +30,61 @@ const pages = {
 };
 const entries = Object.entries(pages);
 
-const settings1 = {
-  'Profile': 'profile',
-  'Account': 'account',
-  'Dashboard': 'dashboard',
-  'Cart': 'dashboard',
-  'Logout': 'login',
+const USER = {
+  'Profile': {
+    label: 'profile',
+    link: '/profile',
+    icon: <PersonOutlineIcon />
+  },
+  'Account': {
+    label: 'account',
+    link: '/account',
+    icon: <ManageAccountsIcon />
+  },
+  'Dashboard': {
+    label: 'dashboard',
+    link: '/dashboard/user',
+    icon: <DashboardIcon />
+  },
+  'Cart': {
+    label: 'cart',
+    link: '/dashboard/user/my-orders',
+    icon: <AddShoppingCartIcon />
+  },
+  'Logout': {
+    label: 'logout',
+    link: '/logout',
+    icon: <LogoutIcon />
+  }
 };
-const entries_two = Object.entries(settings1);
+
+const ADMIN = {
+  'Profile': {
+    label: 'profile',
+    link: '/profile',
+    icon: <PersonOutlineIcon />
+  },
+  'Account': {
+    label: 'account',
+    link: '/account/admin',
+    icon: <ManageAccountsIcon />
+  },
+  'Dashboard': {
+    label: 'dashboard',
+    link: '/dashboard/admin',
+    icon: <DashboardIcon />
+  },
+  'Logout': {
+    label: 'logout',
+    link: '/logout',
+    icon: <LogoutIcon />
+  }
+};
+
+const user_entries = Object.entries(USER);
+const admin_entries = Object.entries(ADMIN);
+
+console.log(user_entries);
 
 
 const Navbar = () => {
@@ -213,31 +263,48 @@ const Navbar = () => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  {entries_two.map(([key, value]) => (
-                     <Link key={key} href={key === 'Cart' && isAdmin !== 'admin' ? `/${value}/user/my-orders` : ``}>
-                      <MenuItem key={key} onClick={handleCloseUserMenu}>
-                        {
-                          <Typography textAlign="center">
-                            {key === 'Logout' ? '' : key}
-                          </Typography>
-                        }
-                        {
+                  {
+                    isAdmin === 'admin' ?
+                      admin_entries.map(([key, { label, icon, link }]) => (
+                        <MenuItem key={key} onClick={handleCloseUserMenu}>
+                          <Link href={link}>
+                            <Typography sx={{
+                              paddingLeft: '30px', paddingRight: '30px', paddingTop: '10px', paddingBottom: '10px',
+                              ":hover": {
+                                backgroundColor: 'black',
+                                color: 'white'
 
-                          <Typography textAlign="center">
-                            {key === 'Cart' ? <ShoppingCartIcon /> : ''}
-                          </Typography>
-                        }
-                        {
-                          key === 'Logout' &&
-                          <Button onClick={handleLogout}>
-                            <Typography textAlign="center">
-                              {key}
+                              },
+                              width: '200px'
+                            }}>
+                              {icon}
+                              <span style={{ marginLeft: '10px' }}>{label}</span>
                             </Typography>
-                          </Button>
-                        }
-                      </MenuItem>
-                    </Link>
-                  ))}
+                          </Link>
+                        </MenuItem>
+                      ))
+                      :
+                      user_entries.map(([key, { label, icon, link }]) => (
+                        <MenuItem key={key} onClick={handleCloseUserMenu}>
+                          <Link href={link}>
+                            <Typography sx={{
+                              paddingLeft: '30px', paddingRight: '30px', paddingTop: '10px', paddingBottom: '10px',
+                              ":hover": {
+                                backgroundColor: 'black',
+                                color: 'white'
+
+                              },
+                              width: '200px'
+                            }}>
+                              {icon}
+                              <span style={{ marginLeft: '10px' }}>{label}</span>
+                            </Typography>
+                          </Link>
+                        </MenuItem>
+                      ))
+
+
+                  }
                 </Menu>
               </Box>
               :
@@ -248,6 +315,7 @@ const Navbar = () => {
           }
         </Toolbar>
       </Container>
+
     </AppBar>
   );
 }

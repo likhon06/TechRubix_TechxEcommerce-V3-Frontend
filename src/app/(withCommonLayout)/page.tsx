@@ -25,7 +25,7 @@ const HomePage = async () => {
     <>
       <Hero />
       {/* only take flash data from table */}
-      <ProductCard flashsaledata={flashsaledata} />
+      <ProductCard flashsaledata={flashsaledata?.data} />
       <TopCategoriesCard />
       {/* all product top rated as popular product - higest 10 */}
       <PopularProduct populardata={populardata} />

@@ -28,6 +28,7 @@ import Link from 'next/link';
 import { useAdminCheckQuery } from '@/redux/features/isadmin.check';
 import { jwtDecode } from 'jwt-decode';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import { Button, Chip } from '@mui/material';
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -162,7 +163,7 @@ export const DDrawer = () => {
                     </IconButton>
                     <div className='block'>
                         <h1 className=''>{userEmail}</h1>
-                        <h1 className='btn btn-xs'>{userRole === 'admin' ? 'Admin' : 'User'}</h1>
+                        <Button sx={{fontSize:'11px'}} color="primary">{userRole === 'admin' ? 'Admin Dashboard' : 'User Dashboard'}</Button>
                     </div>
 
                 </Toolbar>
@@ -179,7 +180,7 @@ export const DDrawer = () => {
 
                     isAdminCheckByEmail?.role === 'admin' ?
                         <List>
-                            {['Dashboard','Add Products', 'All Product', 'All User', 'Home'].map((text, index) => (
+                            {['Dashboard', 'Add Products', 'All Product', 'All User', 'Home'].map((text, index) => (
                                 <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                                     <ListItemButton
                                         sx={{
@@ -197,7 +198,7 @@ export const DDrawer = () => {
                                                 }}
                                             >
                                                 {
-                                                    index === 0 && <Link href={'/dashboard'}><DashboardIcon /></Link>
+                                                    index === 0 && <Link href={'/dashboard/admin'}><DashboardIcon /></Link>
                                                 }
                                                 {
                                                     index === 1 && <Link href={'/dashboard/admin/products/add-products'}><AddIcon /></Link>
@@ -211,9 +212,9 @@ export const DDrawer = () => {
                                                 {
                                                     index === 4 && <Link href={'/'}><HomeIcon /></Link>
                                                 }
-                                                
+
                                             </ListItemIcon>
-                                            
+
                                         }
                                         <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                                     </ListItemButton>
@@ -222,7 +223,7 @@ export const DDrawer = () => {
                         </List>
                         :
                         <List>
-                            {['My Orders', 'Home'].map((text, index) => (
+                            {['Dashboard', 'My Orders', 'Home'].map((text, index) => (
                                 <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                                     <ListItemButton
                                         sx={{
@@ -237,13 +238,16 @@ export const DDrawer = () => {
                                                     minWidth: 0,
                                                     mr: open ? 3 : 'auto',
                                                     justifyContent: 'center',
-                                                }}
-                                            >
+                                                }}                                   
+                                            >   
                                                 {
-                                                    index === 0 && <Link href={'/dashboard/user/my-orders'}><ListAltIcon /></Link>
+                                                    index === 0 && <Link href={'/dashboard/user'}><DashboardIcon/></Link>
                                                 }
                                                 {
-                                                    index === 1 && <Link href={'/'}><HomeIcon /></Link>
+                                                    index === 1 && <Link href={'/dashboard/user/my-orders'}><ListAltIcon /></Link>
+                                                }
+                                                {
+                                                    index === 2 && <Link href={'/'}><HomeIcon /></Link>
                                                 }
                                             </ListItemIcon>
 
