@@ -1,6 +1,5 @@
 import { DDrawer } from "@/Components/UI/DDrawer/DDrawer";
 import { Toaster } from "sonner";
-import NextTopLoader from 'nextjs-toploader';
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="">
