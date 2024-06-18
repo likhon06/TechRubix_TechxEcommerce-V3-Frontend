@@ -53,7 +53,7 @@ const USER = {
   },
   'Logout': {
     label: 'logout',
-    link: '/logout',
+    link: '/login',
     icon: <LogoutIcon />
   }
 };
@@ -76,7 +76,7 @@ const ADMIN = {
   },
   'Logout': {
     label: 'logout',
-    link: '/logout',
+    link: '/login',
     icon: <LogoutIcon />
   }
 };
