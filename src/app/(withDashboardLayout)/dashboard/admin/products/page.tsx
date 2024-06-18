@@ -11,35 +11,48 @@ const override: CSSProperties = {
     margin: "0 auto",
     borderColor: "red",
 };
-  
+interface Product {
+    _id: string;
+    name: string;
+    category: string;
+    image: string;
+    regular_price: number;
+    sale_price: number;
+    discount: number;
+    stock: number;
+    rating: number;
+    description?: string; // Assuming description is optional
+}
+
+
 const ProductShowPage = () => {
-    const [tableProducts, setTableProducts] = useState([]);
     let [color, setColor] = useState("#ffffff");
-    const [loading, setLoading] = useState(true);
+    const [tableProducts, setTableProducts] = useState<Product[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch('https://tr-ecom-backend.vercel.app/top-products', {
+                const res = await fetch('https://tech-rubix-backend.vercel.app/top-products', {
                     next: {
                         revalidate: 1
                     }
                 });
                 const data = await res.json();
+                console.log(data);
                 const newData = data?.map((d: any) => ({ ...d, id: d?._id }));
                 setTableProducts(newData);
             } catch (error) {
                 console.error('Failed to fetch products:', error);
-            } finally {
-                setLoading(false);
             }
         };
         fetchData();
     }, []);
-    console.log(tableProducts);
+
+    
+
     const handleDelete = async (id: string) => {
         try {
-            await fetch(`https://tr-ecom-backend.vercel.app/delete-user/${id}`, {
+            await fetch(`https://tech-rubix-backend.vercel.app/delete-user/${id}`, {
                 method: 'DELETE',
             });
         } catch (error) {
@@ -49,7 +62,7 @@ const ProductShowPage = () => {
 
     const handleUpdate = async (id: string, updatedData: any) => {
         try {
-            await fetch(`https://tr-ecom-backend.vercel.app/update-user/${id}`, {
+            await fetch(`https://tech-rubix-backend.vercel.app/update-user/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -108,19 +121,7 @@ const ProductShowPage = () => {
         }
     ];
 
-    if (loading) {
-        return <SyncLoader
-        color={color}
-        loading={loading}
-        cssOverride={override}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />;
-    }
-
-
-
+    console.log(tableProducts)
     return (
         <Box sx={{ height: 400, width: '100%' }}>
             <DataGrid

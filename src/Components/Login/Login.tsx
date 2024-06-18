@@ -52,38 +52,31 @@ const Login = () => {
     const router = useRouter();
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        
-        // Extract email and password from the form data
-        const loginUserData = {
-            email: data.get('email') as string,
-            password: data.get('password') as string,
-        };
+        const formData = new FormData(event.currentTarget);
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
     
         // Logging the extracted login data
-        console.log(loginUserData);
+        console.log({ email, password });
     
         try {
-            // Validate the login data against the user schema
-            const userDataLogin = userSchema.parse(loginUserData);
+            // Validate the login data
+            const userDataLogin = userSchema.parse({ email, password });
     
-            // Attempt to log in the user with the validated data
+            // Attempt to log in the user
             const res = await LoginPage(userDataLogin);
     
-            // Log the response from the login attempt
+            // Log the response
             console.log(res);
     
-            // If login is successful, store the token and redirect
             if (res && res.success) {
                 localStorage.setItem('Token', res.token);
                 toast.success('Login successful!');
                 router.push('/');
             } else {
-                // Handle cases where the login is not successful
                 toast.error('Login failed. Please check your credentials.');
             }
         } catch (error) {
-            // Handle validation errors and other exceptions
             console.error('Error during login:', error);
             toast.error('An error occurred during login. Please try again.');
         }

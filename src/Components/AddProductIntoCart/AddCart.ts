@@ -2,7 +2,7 @@
 export const AddCart = async(data: any) => {
    console.log(data);
    try{
-      const res = await fetch('http:localhost:5000/add/cart', {
+      const res = await fetch('https://tech-rubix-backend.vercel.app/add/cart', {
          method: 'POST',
          headers: {
             'Content-Type' : 'application/json'

@@ -20,7 +20,7 @@ const UpdateProductPage = async () => {
         console.log(data);
     }
 
-    const res = await fetch(`https://tr-ecom-backend.vercel.app/update-products/${productId}`, {
+    const res = await fetch(`https://tech-rubix-backend.vercel.app/update-products/${productId}`, {
         next: {
             revalidate: 1
         }

@@ -7,7 +7,7 @@ import Marquee from "react-fast-marquee";
 import Image from 'next/image';
 
 const HomePage = async () => {
-  const resOne = await fetch('https://tr-ecom-backend.vercel.app/flash-products', {
+  const resOne = await fetch('https://tech-rubix-backend.vercel.app/flash-products', {
     next: {
       revalidate: 1
     }
@@ -15,7 +15,7 @@ const HomePage = async () => {
   const flashsaledata = await resOne.json();
   console.log(flashsaledata);
 
-  const resTwo = await fetch('https://tr-ecom-backend.vercel.app/top-products', {
+  const resTwo = await fetch('https://tech-rubix-backend.vercel.app/top-products', {
     next: {
       revalidate: 30
     }

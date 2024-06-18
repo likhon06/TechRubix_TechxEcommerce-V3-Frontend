@@ -26,7 +26,7 @@ const UserDashboardPage = () => {
     if (userEmail) {
       try {
         const fetchCartData = async () => {
-          const res = await fetch(`https://tr-ecom-backend.vercel.app/cart/${userEmail}`, {
+          const res = await fetch(`https://tech-rubix-backend.vercel.app/cart/${userEmail}`, {
             next: {
               revalidate: 1
             }

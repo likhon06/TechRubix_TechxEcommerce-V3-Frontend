@@ -12,7 +12,7 @@ const FlashProductsPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`https://tr-ecom-backend.vercel.app/flash-products?page=${page}`);
+        const response = await fetch(`https://tech-rubix-backend.vercel.app/flash-products?page=${page}`);
         const result = await response.json();
         setProducts(result.data);
         setTotalPages(result.totalPages);

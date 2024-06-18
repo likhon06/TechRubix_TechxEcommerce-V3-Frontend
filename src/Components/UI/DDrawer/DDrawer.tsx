@@ -100,24 +100,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-interface TEmailData {
-    data: {
-        _id: string
-        first_name: string
-        last_name: string
-        email: string
-        password: string
-        role?: string
-    }
-}
-
 
 export const DDrawer = () => {
     const theme = useTheme();
     const [userEmail, setUserEmail] = React.useState<string | null>(null);
     const [userRole, setUserRole] = React.useState<string | null>(null);
-    const { data: isAdminCheckByEmail } = useAdminCheckQuery(userEmail) as TEmailData;
+
     const [open, setOpen] = React.useState(false);
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -125,6 +115,7 @@ export const DDrawer = () => {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
     React.useEffect(() => {
         const storedToken = localStorage.getItem('Token');
         if (storedToken) {
@@ -134,7 +125,7 @@ export const DDrawer = () => {
                     role: string;
                 } = jwtDecode(storedToken);
                 setUserEmail(decodedToken?.email);
-                setUserRole(decodedToken?.role)
+                setUserRole(decodedToken?.role);
                 console.log(decodedToken?.role);
             } catch (error) {
                 console.error('Invalid token', error);
@@ -142,12 +133,11 @@ export const DDrawer = () => {
         }
     }, []);
 
-
     return (
         <Box sx={{ display: 'flex', justifyContent: 'between' }}>
             <CssBaseline />
             <AppBar position="fixed" open={open}>
-                <Toolbar sx={{ backgroundColor: 'black', display: 'flex' }}>
+                <Toolbar sx={{ backgroundColor: 'black',paddingTop:'5px', display: 'flex' }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -163,7 +153,7 @@ export const DDrawer = () => {
                     </IconButton>
                     <div className='block'>
                         <h1 className=''>{userEmail}</h1>
-                        <Button sx={{fontSize:'11px'}} color="primary">{userRole === 'admin' ? 'Admin Dashboard' : 'User Dashboard'}</Button>
+                        <Button sx={{ fontSize: '11px' }} color="primary">{userRole === 'admin' ? 'Admin Dashboard' : 'User Dashboard'}</Button>
                     </div>
 
                 </Toolbar>
@@ -178,7 +168,7 @@ export const DDrawer = () => {
                 <Divider />
                 {
 
-                    isAdminCheckByEmail?.role === 'admin' ?
+                    userRole === 'admin' ?
                         <List>
                             {['Dashboard', 'Add Products', 'All Product', 'All User', 'Home'].map((text, index) => (
                                 <ListItem key={text} disablePadding sx={{ display: 'block' }}>
@@ -238,10 +228,10 @@ export const DDrawer = () => {
                                                     minWidth: 0,
                                                     mr: open ? 3 : 'auto',
                                                     justifyContent: 'center',
-                                                }}                                   
-                                            >   
+                                                }}
+                                            >
                                                 {
-                                                    index === 0 && <Link href={'/dashboard/user'}><DashboardIcon/></Link>
+                                                    index === 0 && <Link href={'/dashboard/user'}><DashboardIcon /></Link>
                                                 }
                                                 {
                                                     index === 1 && <Link href={'/dashboard/user/my-orders'}><ListAltIcon /></Link>
