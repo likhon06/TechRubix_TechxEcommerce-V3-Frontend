@@ -57,6 +57,7 @@ const Login = () => {
             email: data.get('email'),
             password: data.get('password'),
         };
+        console.log(loginUserData);
         const userDataLogin = userSchema.parse(loginUserData);
         const res = await LoginPage(userDataLogin);
         console.log(res)
