@@ -277,7 +277,10 @@ const Navbar = () => {
                               },
                               width: '200px'
                             }}>
-                              <h1 onClick={handleLogout}>{icon}<span style={{ marginLeft: '10px' }}>{label}</span></h1>
+                             <h1 onClick={key === 'Logout' ? handleLogout : undefined}>
+                                        {icon}
+                                        <span style={{ marginLeft: '10px' }}>{label}</span>
+                                    </h1>
                             </Typography>
                           </Link>
                         </MenuItem>
@@ -295,7 +298,10 @@ const Navbar = () => {
                               },
                               width: '200px'
                             }}>
-                            <h1 onClick={handleLogout}>{icon}<span style={{ marginLeft: '10px' }}>{label}</span></h1>
+                             <h1 onClick={key === 'Logout' ? handleLogout : undefined}>
+                                        {icon}
+                                        <span style={{ marginLeft: '10px' }}>{label}</span>
+                                    </h1>
                             </Typography>
                           </Link>
                         </MenuItem>

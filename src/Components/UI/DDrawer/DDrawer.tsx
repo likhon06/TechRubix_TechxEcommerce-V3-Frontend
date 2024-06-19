@@ -40,6 +40,14 @@ const openedMixin = (theme: Theme): CSSObject => ({
     overflowX: 'hidden',
 });
 
+interface typeAdmin {
+    _id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    role?: string;
+}
+
 const closedMixin = (theme: Theme): CSSObject => ({
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -105,7 +113,6 @@ export const DDrawer = () => {
     const theme = useTheme();
     const [userEmail, setUserEmail] = React.useState<string | null>(null);
     const [userRole, setUserRole] = React.useState<string | null>(null);
-
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
@@ -126,18 +133,20 @@ export const DDrawer = () => {
                 } = jwtDecode(storedToken);
                 setUserEmail(decodedToken?.email);
                 setUserRole(decodedToken?.role);
-                console.log(decodedToken?.role);
+                console.log('Role:', decodedToken.role);
+                console.log('Email:', decodedToken.email);
             } catch (error) {
                 console.error('Invalid token', error);
             }
         }
     }, []);
-
+    
+    console.log(userRole);
     return (
         <Box sx={{ display: 'flex', justifyContent: 'between' }}>
             <CssBaseline />
             <AppBar position="fixed" open={open}>
-                <Toolbar sx={{ backgroundColor: 'black',paddingTop:'5px', display: 'flex' }}>
+                <Toolbar sx={{ backgroundColor: 'black', paddingTop: '5px', display: 'flex' }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -168,7 +177,7 @@ export const DDrawer = () => {
                 <Divider />
                 {
 
-                    userRole === 'admin' ?
+                    userRole === 'admin' ? (
                         <List>
                             {['Dashboard', 'Add Products', 'All Product', 'All User', 'Home'].map((text, index) => (
                                 <ListItem key={text} disablePadding sx={{ display: 'block' }}>
@@ -211,7 +220,7 @@ export const DDrawer = () => {
                                 </ListItem>
                             ))}
                         </List>
-                        :
+                    ) : (
                         <List>
                             {['Dashboard', 'My Orders', 'Home'].map((text, index) => (
                                 <ListItem key={text} disablePadding sx={{ display: 'block' }}>
@@ -248,6 +257,7 @@ export const DDrawer = () => {
                                 </ListItem>
                             ))}
                         </List>
+                    )
                 }
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

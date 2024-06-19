@@ -52,7 +52,7 @@ export default function DashboardPage() {
         </div>
         <div className="px-4 text-gray-700">
           <h3 className="text-sm tracking-wider">Total Users</h3>
-          <p className="text-3xl">{allUser.length}</p>
+          <p className="text-xl">{allUser.length}</p>
         </div>
       </div>
       <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
@@ -74,7 +74,7 @@ export default function DashboardPage() {
         </div>
         <div className="px-4 text-gray-700">
           <h3 className="text-sm tracking-wider">Products in store</h3>
-          <p className="text-3xl">{allProducts} (items)</p>
+          <p className="text-xl">{allProducts}</p>
         </div>
       </div>
     </div>
