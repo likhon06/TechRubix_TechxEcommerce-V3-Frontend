@@ -62,6 +62,7 @@ const Registration = () => {
             last_name: data.get('lastName'),
             email: data.get('email'),
             password: data.get('password'),
+            role: 'user'
         };
         const RegDatas = userSchema.parse(RegData);
         try {
