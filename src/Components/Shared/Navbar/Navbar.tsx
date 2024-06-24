@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; // Changed from `jwtDecode` to `jwtDecode` to correctly import the default export
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -16,12 +16,12 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'; // profile
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'; // account
 import DashboardIcon from '@mui/icons-material/Dashboard'; // dashboard
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'; // cart
 import LogoutIcon from '@mui/icons-material/Logout'; // logout
+
 const pages = {
   'Products': 'products',
   'Flashsale': 'flashsale',
@@ -84,9 +84,6 @@ const ADMIN = {
 const user_entries = Object.entries(USER);
 const admin_entries = Object.entries(ADMIN);
 
-console.log(user_entries);
-
-
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -130,17 +127,16 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('Token');
-    setToken(null);
+    setToken(null); // Added to update the state
+    setUserEmail(null); // Added to update the state
+    setIsAdmin(null); // Added to update the state
     router.push('/login');
   };
 
   return (
-    <AppBar position="static" variant="outlined" sx={{
-      backgroundColor: "black"
-    }}>
-      <Container maxWidth="lg" >
+    <AppBar position="static" variant="outlined" sx={{ backgroundColor: "black" }}>
+      <Container maxWidth="lg">
         <Toolbar disableGutters>
-
           <Typography
             variant="h6"
             noWrap
@@ -159,11 +155,11 @@ const Navbar = () => {
             <Typography
               fontSize="27px"
               fontWeight={550}
-              sx={{
-                color: '#ff9a00'
-              }}
+              sx={{ color: '#ff9a00' }}
               color="warning"
-            >TechRubix</Typography>
+            >
+              TechRubix
+            </Typography>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -190,13 +186,11 @@ const Navbar = () => {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
+              sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {entries.map(([key, value]) => (
                 <Link href={`/${value}`} key={key}>
-                  <MenuItem key={key}>
+                  <MenuItem key={key} onClick={handleCloseNavMenu}>
                     <Typography textAlign="center">{key}</Typography>
                   </MenuItem>
                 </Link>
@@ -222,105 +216,108 @@ const Navbar = () => {
             <Typography
               fontSize="27px"
               fontWeight={550}
-              sx={{
-                color: '#ff9a00'
-              }}
+              sx={{ color: '#ff9a00' }}
               color="warning"
-            >TechRubix</Typography>
+            >
+              TechRubix
+            </Typography>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {entries.map(([key, value]) => (
-              <Link href={`/${value}`} key={key}><Button
-                key={key}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {key}
-              </Button></Link>
+              <Link href={`/${value}`} key={key}>
+                <Button
+                  key={key}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {key}
+                </Button>
+              </Link>
             ))}
           </Box>
           <h1>{userEmail}</h1> &nbsp;&nbsp;
-          {
-            token !== null ?
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={`${userEmail?.[0]}`} />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {
-                    isAdmin === 'admin' ?
-                      admin_entries.map(([key, { label, icon, link }]) => (
-                        <MenuItem key={key} onClick={handleCloseUserMenu}>
-                          <Link href={link}>
-                            <Typography sx={{
-                              paddingLeft: '30px', paddingRight: '30px', paddingTop: '10px', paddingBottom: '10px',
-                              ":hover": {
+          {token !== null ? ( // Conditionally render based on the token state
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={`${userEmail?.[0]}`} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {isAdmin === 'admin'
+                  ? admin_entries.map(([key, { label, icon, link }]) => (
+                      <MenuItem key={key} onClick={handleCloseUserMenu}>
+                        <Link href={link}>
+                          <Typography
+                            sx={{
+                              paddingLeft: '30px',
+                              paddingRight: '30px',
+                              paddingTop: '10px',
+                              paddingBottom: '10px',
+                              ':hover': {
                                 backgroundColor: 'black',
-                                color: 'white'
-
+                                color: 'white',
                               },
-                              width: '200px'
-                            }}>
-                             <h1 onClick={key === 'Logout' ? handleLogout : undefined}>
-                                        {icon}
-                                        <span style={{ marginLeft: '10px' }}>{label}</span>
-                                    </h1>
-                            </Typography>
-                          </Link>
-                        </MenuItem>
-                      ))
-                      :
-                      user_entries.map(([key, { label, icon, link }]) => (
-                        <MenuItem key={key} onClick={handleCloseUserMenu}>
-                          <Link href={link}>
-                            <Typography  sx={{
-                              paddingLeft: '30px', paddingRight: '30px', paddingTop: '10px', paddingBottom: '10px',
-                              ":hover": {
+                              width: '200px',
+                            }}
+                          >
+                            <h1 onClick={key === 'Logout' ? handleLogout : undefined}>
+                              {icon}
+                              <span style={{ marginLeft: '10px' }}>{label}</span>
+                            </h1>
+                          </Typography>
+                        </Link>
+                      </MenuItem>
+                    ))
+                  : user_entries.map(([key, { label, icon, link }]) => (
+                      <MenuItem key={key} onClick={handleCloseUserMenu}>
+                        <Link href={link}>
+                          <Typography
+                            sx={{
+                              paddingLeft: '30px',
+                              paddingRight: '30px',
+                              paddingTop: '10px',
+                              paddingBottom: '10px',
+                              ':hover': {
                                 backgroundColor: 'black',
-                                color: 'white'
-
+                                color: 'white',
                               },
-                              width: '200px'
-                            }}>
-                             <h1 onClick={key === 'Logout' ? handleLogout : undefined}>
-                                        {icon}
-                                        <span style={{ marginLeft: '10px' }}>{label}</span>
-                                    </h1>
-                            </Typography>
-                          </Link>
-                        </MenuItem>
-                      ))
-
-
-                  }
-                </Menu>
-              </Box>
-              :
-              <Link href={`/login`}><Button variant="contained" sx={{
-                paddingLeft: '30px', paddingRight: '30px',
-                paddingTop: '10px', paddingBottom: '10px'
-              }} color="warning">Login</Button></Link>
-          }
+                              width: '200px',
+                            }}
+                          >
+                            <h1 onClick={key === 'Logout' ? handleLogout : undefined}>
+                              {icon}
+                              <span style={{ marginLeft: '10px' }}>{label}</span>
+                            </h1>
+                          </Typography>
+                        </Link>
+                      </MenuItem>
+                    ))}
+              </Menu>
+            </Box>
+          ) : (
+            <Link href="/login">
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button>
+            </Link>
+          )}
         </Toolbar>
       </Container>
-
     </AppBar>
   );
-}
+};
+
 export default Navbar;

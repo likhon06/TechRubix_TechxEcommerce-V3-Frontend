@@ -50,6 +50,7 @@ const userSchema = z.object({
 
 const Login = () => {
     const router = useRouter();
+    const [LoginPost] = useLoginPostMutation(undefined);
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -63,14 +64,9 @@ const Login = () => {
             // Validate the login data
             const userDataLogin = userSchema.parse({ email, password });
     
-            // Attempt to log in the user
-            const res = await LoginPage(userDataLogin);
-    
-            // Log the response
-            console.log(res);
-    
-            if (res && res.success) {
-                localStorage.setItem('Token', res.token);
+            const res = await LoginPost(userDataLogin) as LogResponse;
+            if (res && res?.data?.success) {
+                localStorage.setItem('Token', res?.data?.token);
                 toast.success('Login successful!');
                 router.push('/');
             } else {

@@ -32,6 +32,7 @@ export function middleware(request: NextRequest) {
     ];
 
     const userPaths = [
+        '/dashboard/user',
         '/dashboard/user/my-orders'
     ];
 
@@ -50,7 +51,7 @@ export function middleware(request: NextRequest) {
                 if (isUserPath) {
                     return NextResponse.redirect(new URL('/dashboard/admin', request.url));
                 }
-            } else {
+            }else if(role === 'user') {
                 if (isAdminPath) {
                     return NextResponse.redirect(new URL('/dashboard/user', request.url));
                 }

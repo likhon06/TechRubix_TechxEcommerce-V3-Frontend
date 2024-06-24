@@ -16,6 +16,7 @@ import { useRegUserPostMutation } from '@/redux/features/reguser.post';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
+import { RegistrationPage } from './RegistrationPage';
 
 function Copyright(props: any) {
     return (
@@ -49,7 +50,17 @@ const userSchema = z.object({
         .regex(/[a-z]/, "Password must contain at least one lowercase letter")
         .regex(/\d/, "Password must contain at least one digit")
         .regex(/[^a-zA-Z0-9]/, "Password must contain at least one special character"),
+    role: z.string().min(1).max(18),
 })
+
+type RegResponseType = {
+    data: {
+        success: boolean;
+        message: string;
+        accessToken: string;
+    }
+};
+
 
 const Registration = () => {
     const router = useRouter();
@@ -64,11 +75,12 @@ const Registration = () => {
             password: data.get('password'),
             role: 'user'
         };
+        console.log(RegData);
         const RegDatas = userSchema.parse(RegData);
         try {
-            const res = await submitRegUserPost(RegDatas) as RegResponse;
+            const res : RegResponseType = await submitRegUserPost(RegDatas) as any;
             console.log(res);
-            if (res?.data?.success) { // Check if the payload exists in the response
+            if (res && res?.data?.success) {
                 toast.success("Account Registration Completed");
                 const TOKEN: string = res?.data?.accessToken as string;
                 localStorage.setItem('Token', TOKEN);
