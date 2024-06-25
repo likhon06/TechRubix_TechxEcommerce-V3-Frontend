@@ -1,11 +1,7 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
-import { Provider } from 'react-redux';
-import { store } from '@/redux/store';
 import Providers from '@/lib/Providers/Providers';
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <AppRouterCacheProvider>
           <Providers>
             {children}
