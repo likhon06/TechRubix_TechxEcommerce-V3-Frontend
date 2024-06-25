@@ -1,6 +1,6 @@
 "use server"
 import {cookies} from 'next/headers'
-export const RegistrationPage = async(data: any) => {
+export const RegistrationSignIn = async(data: any) => {
    try{
       const res = await fetch('https://tech-rubix-backend.vercel.app/api/auth/register', {
          method: 'POST',

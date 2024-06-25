@@ -1,6 +1,6 @@
 "use server"
 import {cookies} from 'next/headers'
-export const LoginPage = async(data: any) => {
+export const LoginSignIn = async(data: any) => {
    try{
       const res = await fetch('https://tech-rubix-backend.vercel.app/api/auth/login', {
          method: 'POST',

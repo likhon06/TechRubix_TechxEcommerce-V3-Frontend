@@ -15,7 +15,7 @@ import { useLoginPostMutation } from '@/redux/features/login.post';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { z } from "zod";
-import { LoginPage } from './LoginPage';
+import { LoginSignIn } from './LoginSignIn';
 
 function Copyright(props: any) {
     return (
@@ -64,9 +64,9 @@ const Login = () => {
             // Validate the login data
             const userDataLogin = userSchema.parse({ email, password });
     
-            const res = await LoginPost(userDataLogin) as LogResponse;
-            if (res && res?.data?.success) {
-                localStorage.setItem('Token', res?.data?.token);
+            const res = await LoginSignIn(userDataLogin);
+            if (res && res?.success) {
+                localStorage.setItem('Token', res?.token);
                 toast.success('Login successful!');
                 router.push('/');
             } else {

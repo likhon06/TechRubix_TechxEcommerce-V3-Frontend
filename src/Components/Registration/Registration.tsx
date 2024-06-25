@@ -1,22 +1,18 @@
 "use client"
-import { AxiosResponse } from 'axios';
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useRegUserPostMutation } from '@/redux/features/reguser.post';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
-import { RegistrationPage } from './RegistrationPage';
+import { RegistrationSignIn } from './RegistrationSignIn';
 
 function Copyright(props: any) {
     return (
@@ -64,7 +60,6 @@ type RegResponseType = {
 
 const Registration = () => {
     const router = useRouter();
-    const [submitRegUserPost] = useRegUserPostMutation(undefined);
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -78,11 +73,11 @@ const Registration = () => {
         console.log(RegData);
         const RegDatas = userSchema.parse(RegData);
         try {
-            const res : RegResponseType = await submitRegUserPost(RegDatas) as any;
+            const res = await RegistrationSignIn(RegDatas);
             console.log(res);
-            if (res && res?.data?.success) {
+            if (res && res?.success) {
                 toast.success("Account Registration Completed");
-                const TOKEN: string = res?.data?.accessToken as string;
+                const TOKEN: string = res?.accessToken as string;
                 localStorage.setItem('Token', TOKEN);
                 router.push('/');
             } else {
