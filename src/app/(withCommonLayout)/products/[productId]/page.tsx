@@ -98,7 +98,13 @@ const ProductIdPage = ({ params }: { params: any }) => {
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
         <Grid container spacing={{ xs: 2, md: 4 }}>
           <Grid item xs={12} md={6}>
-            <Skeleton variant="rectangular" height={{ xs: 300, md: 500 }} sx={{ borderRadius: 2 }} />
+            <Skeleton 
+              variant="rectangular" 
+              sx={{ 
+                borderRadius: 2, 
+                height: { xs: 300, md: 500 }
+              }} 
+            />
           </Grid>
           <Grid item xs={12} md={6}>
             <Stack spacing={2}>

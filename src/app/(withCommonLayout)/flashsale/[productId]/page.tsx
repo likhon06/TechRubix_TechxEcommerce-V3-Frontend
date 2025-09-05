@@ -11,13 +11,17 @@ interface JwtPayload {
   role: string
 }
 
-const FlashSaleProductId = async ({ params }: { params: any }) => {
-  const res = await fetch(`https://tech-rubix-backend.vercel.app/products/${params?.productId}`, {
-    next: {
-      revalidate: 30
-    }
-  })
-  const singleProduct = await res.json();
+const FlashSaleProductId = ({ params }: { params: any }) => {
+  // Fetch on client side after mount to avoid async client component
+  const [singleProduct, setSingleProduct] = useState<any>({});
+  React.useEffect(() => {
+    const load = async () => {
+      const res = await fetch(`https://tech-rubix-backend.vercel.app/products/${params?.productId}`);
+      const data = await res.json();
+      setSingleProduct(data);
+    };
+    load();
+  }, [params?.productId]);
 
   const handleItemAddIntoCart = async (id: any, name: any) => {
     const token = localStorage.getItem('Token');

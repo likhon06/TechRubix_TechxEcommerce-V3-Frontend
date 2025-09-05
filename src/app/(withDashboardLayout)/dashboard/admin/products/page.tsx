@@ -88,7 +88,7 @@ interface Product {
 type Order = 'asc' | 'desc';
 
 interface HeadCell {
-    id: keyof Product;
+    id: string;
     label: string;
     numeric: boolean;
     sortable: boolean;
@@ -325,7 +325,7 @@ const ProductShowPage = () => {
                             Product Management
                         </Typography>
                         <Typography variant="body1" color="text.secondary">
-                            Manage your store's product inventory
+                            Manage your store&apos;s product inventory
                         </Typography>
                     </Box>
                     <Button
@@ -414,13 +414,13 @@ const ProductShowPage = () => {
                                         key={headCell.id}
                                         align={headCell.numeric ? 'right' : 'left'}
                                         padding="normal"
-                                        sortDirection={orderBy === headCell.id ? order : false}
+                                        sortDirection={headCell.sortable && orderBy === (headCell.id as keyof Product) ? order : false}
                                     >
                                         {headCell.sortable ? (
                                             <TableSortLabel
-                                                active={orderBy === headCell.id}
-                                                direction={orderBy === headCell.id ? order : 'asc'}
-                                                onClick={() => handleRequestSort(headCell.id)}
+                                                active={orderBy === (headCell.id as keyof Product)}
+                                                direction={orderBy === (headCell.id as keyof Product) ? order : 'asc'}
+                                                onClick={() => handleRequestSort(headCell.id as keyof Product)}
                                                 sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                                             >
                                                 {headCell.id === 'image' && <Inventory />}

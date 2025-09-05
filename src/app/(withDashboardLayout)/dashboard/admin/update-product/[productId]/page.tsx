@@ -14,18 +14,21 @@ interface ResponseDataType {
     }
 }
 
-const UpdateProductPage = async () => {
+const UpdateProductPage = () => {
     const { productId } = useParams();
     const handleFormData = (data: any) => {
         console.log(data);
     }
 
-    const res = await fetch(`https://tech-rubix-backend.vercel.app/update-products/${productId}`, {
-        next: {
-            revalidate: 1
-        }
-    });
-    const singleProduct = await res.json();
+    const [singleProduct, setSingleProduct] = React.useState<any>(null);
+    React.useEffect(() => {
+        const load = async () => {
+            const res = await fetch(`https://tech-rubix-backend.vercel.app/update-products/${productId}`);
+            const data = await res.json();
+            setSingleProduct(data);
+        };
+        load();
+    }, [productId]);
     console.log(singleProduct);
     return (
         <>

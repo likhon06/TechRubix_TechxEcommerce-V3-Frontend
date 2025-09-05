@@ -197,7 +197,7 @@ const CartPage = () => {
               Your cart is empty
             </Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary', mb: 3 }}>
-              Looks like you haven't added any items to your cart yet
+              Looks like you haven&apos;t added any items to your cart yet
             </Typography>
             <Button
               component={Link}

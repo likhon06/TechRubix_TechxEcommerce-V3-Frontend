@@ -217,7 +217,7 @@ export default function DashboardPage() {
                     Admin Dashboard
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Welcome back! Here's what's happening with your store today.
+                    Welcome back! Here&apos;s what&apos;s happening with your store today.
                   </Typography>
                 </Box>
               </Box>

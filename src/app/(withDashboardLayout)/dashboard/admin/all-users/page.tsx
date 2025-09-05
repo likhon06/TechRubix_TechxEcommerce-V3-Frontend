@@ -61,6 +61,7 @@ import {
 import { toast } from 'sonner';
 
 interface User {
+    id: string;
     _id: string;
     first_name: string;
     last_name: string;
@@ -76,7 +77,7 @@ interface User {
 type Order = 'asc' | 'desc';
 
 interface HeadCell {
-    id: keyof User;
+    id: string;
     label: string;
     numeric: boolean;
     sortable: boolean;
@@ -156,9 +157,9 @@ const AllUsersPage = () => {
                 console.error('Delete failed - Response:', errorData);
                 toast.error(`Failed to delete user: ${response.status} - ${errorData}`);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Failed to delete user:', error);
-            toast.error(`Failed to delete user: ${error.message}`);
+            toast.error(`Failed to delete user: ${error?.message || 'Unknown error'}`);
         }
         setDeleteDialogOpen(false);
         setUserToDelete(null);
@@ -312,7 +313,7 @@ const AllUsersPage = () => {
                             User Management
                         </Typography>
                         <Typography variant="body1" color="text.secondary">
-                            Manage your store's users and their permissions
+                            Manage your store&apos;s users and their permissions
                         </Typography>
                     </Box>
                     <Button
@@ -427,13 +428,13 @@ const AllUsersPage = () => {
                                         key={headCell.id}
                                         align={headCell.numeric ? 'right' : 'left'}
                                         padding="normal"
-                                        sortDirection={orderBy === headCell.id ? order : false}
+                                        sortDirection={headCell.sortable && orderBy === (headCell.id as keyof User) ? order : false}
                                     >
                                         {headCell.sortable ? (
                                             <TableSortLabel
-                                                active={orderBy === headCell.id}
-                                                direction={orderBy === headCell.id ? order : 'asc'}
-                                                onClick={() => handleRequestSort(headCell.id)}
+                                                active={orderBy === (headCell.id as keyof User)}
+                                                direction={orderBy === (headCell.id as keyof User) ? order : 'asc'}
+                                                onClick={() => handleRequestSort(headCell.id as keyof User)}
                                                 sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                                             >
                                                 {headCell.id === 'first_name' && <Person />}
@@ -466,8 +467,9 @@ const AllUsersPage = () => {
                                 const isItemSelected = isSelected(user.id);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
-    return (
+                                return (
                                     <TableRow
+                                        key={user.id}
                                         hover
                                         onClick={(event) => handleClick(event, user.id)}
                                         role="checkbox"

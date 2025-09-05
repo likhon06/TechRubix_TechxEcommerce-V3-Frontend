@@ -32,7 +32,7 @@ import {
 } from '@mui/icons-material'
 import { toast } from 'sonner'
 
-const contactusPage = () => {
+const ContactusPage = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -117,7 +117,7 @@ const contactusPage = () => {
                     mb: 4
                   }}
                 >
-                  Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                  Have questions? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
                 </Typography>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
                   <Chip
@@ -330,7 +330,7 @@ const contactusPage = () => {
                         Business Hours
                       </Typography>
                       <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                        We're here to help
+                        We&apos;re here to help
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 500 }}>
                         Monday - Friday: 9:00 AM - 6:00 PM
@@ -364,7 +364,7 @@ const contactusPage = () => {
             Still Have Questions?
           </Typography>
           <Typography variant="h6" sx={{ mb: 4, opacity: 0.9 }}>
-            Our support team is here to help you 24/7. Don't hesitate to reach out!
+            Our support team is here to help you 24/7. Don&apos;t hesitate to reach out!
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
             <Button
@@ -419,11 +419,11 @@ const contactusPage = () => {
           sx={{ width: '100%' }}
           icon={<CheckCircle />}
         >
-          Message sent successfully! We'll get back to you soon.
+          Message sent successfully! We&apos;ll get back to you soon.
         </Alert>
       </Snackbar>
     </Box>
   )
 }
 
-export default contactusPage
+export default ContactusPage

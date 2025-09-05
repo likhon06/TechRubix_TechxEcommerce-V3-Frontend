@@ -83,9 +83,9 @@ const Hero = () => {
       clearTimeout(timer);
       if (glideInstance) {
         glideInstance.destroy();
-    }
+      }
     };
-  }, []);
+  }, [glideInstance]);
 
   return (
     <Box sx={{ position: 'relative', width: '100%', overflow: 'hidden' }}>

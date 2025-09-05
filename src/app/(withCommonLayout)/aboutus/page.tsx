@@ -26,7 +26,7 @@ import {
   Speed
 } from '@mui/icons-material'
 
-const aboutusPage = () => {
+const AboutusPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -224,30 +224,5 @@ const aboutusPage = () => {
   )
 }
 
-export default aboutusPage
+export default AboutusPage
 
-          </h2>
-
-          <p className="text-gray-700">
-
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, commodi
-
-            doloremque, fugiat illum magni minus nisi nulla numquam obcaecati placeat quia, repellat tempore
-
-            voluptatum.
-
-          </p>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  )
-
-}
-
-
-
-export default aboutusPage
