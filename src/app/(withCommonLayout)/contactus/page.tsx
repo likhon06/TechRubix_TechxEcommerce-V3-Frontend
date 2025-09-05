@@ -1,180 +1,429 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
+import {
+  Container,
+  Typography,
+  Box,
+  Grid,
+  Card,
+  TextField,
+  Button,
+  Paper,
+  Stack,
+  useTheme,
+  useMediaQuery,
+  Alert,
+  Snackbar,
+  Chip,
+  Avatar,
+  InputAdornment,
+  Fade
+} from '@mui/material'
+import {
+  Phone,
+  Email,
+  LocationOn,
+  Schedule,
+  Send,
+  CheckCircle,
+  Person,
+  Subject,
+  Message
+} from '@mui/icons-material'
+import { toast } from 'sonner'
 
 const contactusPage = () => {
-    return (
-        <div className="container my-12 mx-auto px-2 md:px-4">
-            <section className="mb-32">
-                <div className="flex justify-center">
-                    <div className="text-center md:max-w-xl lg:max-w-3xl">
-                        <h2 className="mb-12 px-6 text-3xl font-bold">
-                            Contact us
-                        </h2>
-                    </div>
-                </div>
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-                <div className="flex flex-wrap">
-                    <form className="mb-12 w-full shrink-0 grow-0 basis-auto md:px-3 lg:mb-0 lg:w-5/12 lg:px-6">
-                        <div className="mb-3 w-full">
-                            <label className="block font-medium mb-[2px] text-teal-700" htmlFor="exampleInput90">
-                                Name
-                            </label>
-                            <input
-                                type="text"
-                                className="px-2 py-2 border w-full outline-none rounded-md"
-                                id="exampleInput90"
-                                placeholder="Name"
-                            />
-                        </div>
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-                        <div className="mb-3 w-full">
-                            <label className="block font-medium mb-[2px] text-teal-700" htmlFor="exampleInput91">
-                                Email
-                            </label>
-                            <input
-                                type="email"
-                                className="px-2 py-2 border w-full outline-none rounded-md"
-                                id="exampleInput91"
-                                placeholder="Enter your email address"
-                            />
-                        </div>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
-                        <div className="mb-3 w-full">
-                            <label className="block font-medium mb-[2px] text-teal-700" htmlFor="exampleInput92">
-                                Message
-                            </label>
-                            <textarea
-                                className="px-2 py-2 border rounded-[5px] w-full outline-none"
-                                id="exampleInput92"
-                            ></textarea>
-                        </div>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      setShowSuccess(true);
+      toast.success('Message sent successfully! We\'ll get back to you soon.');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    }, 2000);
+  };
 
-                        <button
-                            type="button"
-                            className="mb-6 inline-block w-full rounded bg-teal-400 px-6 py-2.5 font-medium uppercase leading-normal text-white hover:shadow-md hover:bg-teal-500"
-                        >
-                            Send
-                        </button>
-                    </form>
+  return (
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      {/* Hero Section */}
+      <Box
+        sx={{
+          background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 50%, #00bcd4 100%)',
+          color: 'white',
+          py: { xs: 8, md: 12 },
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center' }}>
+            <Fade in timeout={1000}>
+              <Box>
+                <Chip
+                  label="Get in Touch"
+                  sx={{
+                    backgroundColor: 'rgba(255,255,255,0.2)',
+                    color: 'white',
+                    fontWeight: 600,
+                    mb: 3,
+                    px: 2,
+                    py: 1
+                  }}
+                />
+                <Typography
+                  variant={isMobile ? "h3" : "h2"}
+                  component="h1"
+                  sx={{
+                    fontWeight: 700,
+                    mb: 3,
+                    lineHeight: 1.2,
+                    background: 'linear-gradient(45deg, #ffffff, #e3f2fd)',
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent'
+                  }}
+                >
+                  Contact Us
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    opacity: 0.9,
+                    lineHeight: 1.6,
+                    maxWidth: 600,
+                    mx: 'auto',
+                    mb: 4
+                  }}
+                >
+                  Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                </Typography>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
+                  <Chip
+                    icon={<Phone />}
+                    label="24/7 Support"
+                    sx={{
+                      backgroundColor: 'rgba(255,255,255,0.2)',
+                      color: 'white',
+                      fontWeight: 600
+                    }}
+                  />
+                  <Chip
+                    icon={<Email />}
+                    label="Quick Response"
+                    sx={{
+                      backgroundColor: 'rgba(255,255,255,0.2)',
+                      color: 'white',
+                      fontWeight: 600
+                    }}
+                  />
+                </Stack>
+              </Box>
+            </Fade>
+          </Box>
+        </Container>
+      </Box>
 
-                    <div className="w-full shrink-0 grow-0 basis-auto lg:w-7/12">
-                        <div className="flex flex-wrap">
-                            <div className="mb-12 w-full shrink-0 grow-0 basis-auto md:w-6/12 md:px-3 lg:px-6">
-                                <div className="flex items-start">
-                                    <div className="shrink-0">
-                                        <div className="inline-block rounded-md bg-teal-400-100 p-4 text-teal-700">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth="2"
-                                                stroke="currentColor"
-                                                className="h-6 w-6"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M14.25 9.75v-4.5m0 4.5h4.5m-4.5 0l6-6m-3 18c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 014.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.054.902-.417 1.173l-1.293.97a1.062 1.062 0 00-.38 1.21 12.035 12.035 0 007.143 7.143c.441.162.928-.004 1.21-.38l.97-1.293a1.125 1.125 0 011.173-.417l4.423 1.106c.5.125.852.575.852 1.091V19.5a2.25 2.25 0 01-2.25 2.25h-2.25z"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div className="ml-6 grow">
-                                        <p className="mb-2 font-bold">Technical support</p>
-                                        <p className="text-neutral-500">support@example.com</p>
-                                        <p className="text-neutral-500">+1 234-567-89</p>
-                                    </div>
-                                </div>
-                            </div>
+      {/* Contact Form & Info Section */}
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Grid container spacing={6}>
+          {/* Contact Form */}
+          <Grid item xs={12} lg={6}>
+            <Card sx={{ p: 4, height: 'fit-content', boxShadow: 3 }}>
+              <Typography variant="h5" component="h2" sx={{ fontWeight: 700, mb: 3 }}>
+                Send us a Message
+              </Typography>
+              <form onSubmit={handleSubmit}>
+                <Stack spacing={3}>
+                  <TextField
+                    name="name"
+                    label="Full Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    variant="outlined"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Person color="action" />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <TextField
+                    name="email"
+                    label="Email Address"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    variant="outlined"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Email color="action" />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <TextField
+                    name="subject"
+                    label="Subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    variant="outlined"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Subject color="action" />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <TextField
+                    name="message"
+                    label="Message"
+                    multiline
+                    rows={4}
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    variant="outlined"
+                    placeholder="Tell us how we can help you..."
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start" sx={{ alignSelf: 'flex-start', mt: 1 }}>
+                          <Message color="action" />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    startIcon={loading ? <CheckCircle /> : <Send />}
+                    disabled={loading}
+                    sx={{
+                      py: 1.5,
+                      fontSize: '1.1rem',
+                      fontWeight: 600,
+                      background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
+                      '&:hover': {
+                        background: 'linear-gradient(45deg, #1565c0, #1976d2)'
+                      }
+                    }}
+                  >
+                    {loading ? 'Sending...' : 'Send Message'}
+                  </Button>
+                </Stack>
+              </form>
+            </Card>
+          </Grid>
 
-                            <div className="mb-12 w-full shrink-0 grow-0 basis-auto md:w-6/12 md:px-3 lg:px-6">
-                                <div className="flex items-start">
-                                    <div className="shrink-0">
-                                        <div className="inline-block rounded-md bg-teal-400-100 p-4 text-teal-700">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth="2"
-                                                stroke="currentColor"
-                                                className="h-6 w-6"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div className="ml-6 grow">
-                                        <p className="mb-2 font-bold">Sales questions</p>
-                                        <p className="text-neutral-500">sales@example.com</p>
-                                        <p className="text-neutral-500">+1 234-567-89</p>
-                                    </div>
-                                </div>
-                            </div>
+          {/* Contact Information */}
+          <Grid item xs={12} lg={6}>
+            <Box>
+              <Typography variant="h5" component="h2" sx={{ fontWeight: 700, mb: 4 }}>
+                Contact Information
+              </Typography>
+              <Stack spacing={3}>
+                <Card sx={{ p: 3, transition: 'all 0.3s ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: 4 } }}>
+                  <Stack direction="row" spacing={3} alignItems="flex-start">
+                    <Avatar sx={{ backgroundColor: 'primary.main' }}>
+                      <Phone />
+                    </Avatar>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 1 }}>
+                        Phone Support
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                        Call us for immediate assistance
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        +1 (555) 123-4567
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        +1 (555) 987-6543
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Card>
 
-                            <div className="mb-12 w-full shrink-0 grow-0 basis-auto md:w-6/12 md:px-3 lg:px-6">
-                                <div className="align-start flex">
-                                    <div className="shrink-0">
-                                        <div className="inline-block rounded-md bg-teal-400-100 p-4 text-teal-700">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth="2"
-                                                stroke="currentColor"
-                                                className="h-6 w-6"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div className="ml-6 grow">
-                                        <p className="mb-2 font-bold">Press</p>
-                                        <p className="text-neutral-500">press@example.com</p>
-                                        <p className="text-neutral-500">+1 234-567-89</p>
-                                    </div>
-                                </div>
-                            </div>
+                <Card sx={{ p: 3, transition: 'all 0.3s ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: 4 } }}>
+                  <Stack direction="row" spacing={3} alignItems="flex-start">
+                    <Avatar sx={{ backgroundColor: 'secondary.main' }}>
+                      <Email />
+                    </Avatar>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 1 }}>
+                        Email Support
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                        Send us an email anytime
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        support@techrubix.com
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        sales@techrubix.com
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Card>
 
-                            <div className="mb-12 w-full shrink-0 grow-0 basis-auto md:w-6/12 md:px-3 lg:px-6">
-                                <div className="align-start flex">
-                                    <div className="shrink-0">
-                                        <div className="inline-block rounded-md bg-teal-400-100 p-4 text-teal-700">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth="2"
-                                                stroke="currentColor"
-                                                className="h-6 w-6"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M12 12.75c1.148 0 2.278.08 3.383.237 1.037.146 1.866.966 1.866 2.013 0 3.728-2.35 6.75-5.25 6.75S6.75 18.728 6.75 15c0-1.046.83-1.867 1.866-2.013A24.204 24.204 0 0112 12.75zm0 0c2.883 0 5.647.508 8.207 1.44a23.91 23.91 0 01-1.152 6.06M12 12.75c-2.883 0-5.647.508-8.208 1.44.125 2.104.52 4.136 1.153 6.06M12 12.75a2.25 2.25 0 002.248-2.354M12 12.75a2.25 2.25 0 01-2.248-2.354M12 8.25c.995 0 1.971-.08 2.922-.236.403-.066.74-.358.795-.762a3.778 3.778 0 00-.399-2.25M12 8.25c-.995 0-1.97-.08-2.922-.236-.402-.066-.74-.358-.795-.762a3.734 3.734 0 01.4-2.253M12 8.25a2.25 2.25 0 00-2.248 2.146M12 8.25a2.25 2.25 0 012.248 2.146M8.683 5a6.032 6.032 0 01-1.155-1.002c.07-.63.27-1.222.574-1.747m.581 2.749A3.75 3.75 0 0115.318 5m0 0c.427-.283.815-.62 1.155-.999a4.471 4.471 0 00-.575-1.752M4.921 6a24.048 24.048 0 00-.392 3.314c1.668.546 3.416.914 5.223 1.082M19.08 6c.205 1.08.337 2.187.392 3.314a23.882 23.882 0 01-5.223 1.082"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div className="ml-6 grow">
-                                        <p className="mb-2 font-bold">Bug report</p>
-                                        <p className="text-neutral-500">bugs@example.com</p>
-                                        <p className="text-neutral-500">+1 234-567-89</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    )
+                <Card sx={{ p: 3, transition: 'all 0.3s ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: 4 } }}>
+                  <Stack direction="row" spacing={3} alignItems="flex-start">
+                    <Avatar sx={{ backgroundColor: 'success.main' }}>
+                      <LocationOn />
+                    </Avatar>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 1 }}>
+                        Our Office
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                        Visit our headquarters
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        123 Tech Street, Suite 100
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        San Francisco, CA 94105
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Card>
+
+                <Card sx={{ p: 3, transition: 'all 0.3s ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: 4 } }}>
+                  <Stack direction="row" spacing={3} alignItems="flex-start">
+                    <Avatar sx={{ backgroundColor: 'info.main' }}>
+                      <Schedule />
+                    </Avatar>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 1 }}>
+                        Business Hours
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                        We're here to help
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        Monday - Friday: 9:00 AM - 6:00 PM
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        Saturday - Sunday: 10:00 AM - 4:00 PM
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Card>
+              </Stack>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+
+      {/* CTA Section */}
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Paper
+          sx={{
+            background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)',
+            color: 'white',
+            p: 6,
+            textAlign: 'center',
+            borderRadius: 3,
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          <Typography variant="h4" component="h2" sx={{ fontWeight: 700, mb: 2 }}>
+            Still Have Questions?
+          </Typography>
+          <Typography variant="h6" sx={{ mb: 4, opacity: 0.9 }}>
+            Our support team is here to help you 24/7. Don't hesitate to reach out!
+          </Typography>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<Phone />}
+              sx={{
+                backgroundColor: 'white',
+                color: 'primary.main',
+                fontWeight: 600,
+                px: 4,
+                py: 1.5,
+                '&:hover': {
+                  backgroundColor: 'rgba(255,255,255,0.9)'
+                }
+              }}
+            >
+              Call Now
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              startIcon={<Email />}
+              sx={{
+                color: 'white',
+                borderColor: 'white',
+                fontWeight: 600,
+                px: 4,
+                py: 1.5,
+                '&:hover': {
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  borderColor: 'white'
+                }
+              }}
+            >
+              Email Us
+            </Button>
+          </Stack>
+        </Paper>
+      </Container>
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={showSuccess}
+        autoHideDuration={6000}
+        onClose={() => setShowSuccess(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setShowSuccess(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+          icon={<CheckCircle />}
+        >
+          Message sent successfully! We'll get back to you soon.
+        </Alert>
+      </Snackbar>
+    </Box>
+  )
 }
 
 export default contactusPage

@@ -1,5 +1,5 @@
 import PopularProductsCard from '@/Components/UI/HomePage/PopularProductsCard/PopularProductsCard';
-import { Box, Button, Container, Typography } from '@mui/material'
+import { Box, Button, Container, Typography, Grid } from '@mui/material'
 import Link from 'next/link';
 import React from 'react'
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
@@ -7,39 +7,71 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 const PopularProduct = ({ populardata }: { populardata: any }) => {
 
     return (
-        <>
-            <div className="mt-[100px] w-3/4 mx-auto">
+        <Box sx={{ mt: 12, mb: 4 }}>
+            <Container maxWidth="xl">
                 <Box
                     display="flex"
                     justifyContent="space-between"
+                    alignItems="center"
+                    mb={4}
+                    px={2}
                 >
-                    <Typography variant='h4'
-                        fontWeight={600}
-                    >Most Popular Products <br />
-                        <p
-                            className='text-sm font-thin w-3/4'
-                        >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fringilla nunc in molestie feugiat. Nunc auctor consectetur elit, quis pulvina.</p>
-                    </Typography>
+                    <Box>
+                        <Typography 
+                            variant='h4'
+                            fontWeight={700}
+                            sx={{
+                                background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
+                                backgroundClip: 'text',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                mb: 1
+                            }}
+                        >
+                            Most Popular Products
+                        </Typography>
+                        <Typography 
+                            variant="body1" 
+                            color="text.secondary"
+                            sx={{ maxWidth: 500 }}
+                        >
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fringilla nunc in molestie feugiat.
+                        </Typography>
+                    </Box>
 
-                    <Link href={`/products`} >
-                        <button className='btn rounded-3xl text-lg'>View All<MdOutlineKeyboardArrowRight className='size-6' /></button>
+                    <Link href="/products" style={{ textDecoration: 'none' }}>
+                        <Button
+                            variant="contained"
+                            endIcon={<MdOutlineKeyboardArrowRight />}
+                            sx={{
+                                px: 4,
+                                py: 1.5,
+                                borderRadius: 6,
+                                fontSize: '1.1rem',
+                                fontWeight: 600,
+                                background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
+                                boxShadow: 3,
+                                '&:hover': {
+                                    background: 'linear-gradient(45deg, #1565c0, #1976d2)',
+                                    boxShadow: 6,
+                                    transform: 'translateY(-2px)'
+                                },
+                                transition: 'all 0.3s ease-in-out'
+                            }}
+                        >
+                            View All
+                        </Button>
                     </Link>
-
                 </Box>
-                <div className="grid grid-cols-1 gy-4 md:grid-cols-2 lg:grid-cols-4">
-                    {
-                        populardata?.slice(0, 4).map((pdata: any) =>
-                            <PopularProductsCard
-                                key={pdata._id}
-                                pdata={pdata}
-                            />
-                        )
-                    }
-
-                    {/* Add more ProductCard components as needed */}
-                </div>
-            </div>
-        </>
+                <Grid container spacing={3} px={2}>
+                    {populardata?.slice(0, 4).map((pdata: any) => (
+                        <Grid item xs={12} sm={6} md={3} key={pdata._id}>
+                            <PopularProductsCard pdata={pdata} />
+                        </Grid>
+                    ))}
+                </Grid>
+            </Container>
+        </Box>
     )
 }
 

@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { jwtDecode } from 'jwt-decode'; // Changed from `jwtDecode` to `jwtDecode` to correctly import the default export
 import * as React from 'react';
@@ -16,16 +16,32 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import Badge from '@mui/material/Badge';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'; // profile
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'; // account
 import DashboardIcon from '@mui/icons-material/Dashboard'; // dashboard
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'; // cart
 import LogoutIcon from '@mui/icons-material/Logout'; // logout
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import BoltOutlinedIcon from '@mui/icons-material/BoltOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ContactSupportOutlinedIcon from '@mui/icons-material/ContactSupportOutlined';
 import { removeAccessTokenCookie } from "@/Components/RemoveCookieToken/RemoveCookieToken";
+import Image from 'next/image';
 
 const pages = {
-  'Products': 'products',
-  'Flashsale': 'flashsale',
+  'Products': 'flashsale',
   'About Us': 'aboutus',
   'Contact Us': 'contactus',
 };
@@ -88,12 +104,17 @@ const admin_entries = Object.entries(ADMIN);
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
+  const [searchText, setSearchText] = React.useState<string>("");
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
+  };
+  const toggleDrawer = (open: boolean) => () => {
+    setMobileOpen(open);
   };
 
   const handleCloseNavMenu = () => {
@@ -107,9 +128,14 @@ const Navbar = () => {
   const [token, setToken] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
+    setIsClient(true);
+    
+    const checkAuth = () => {
     const storedToken = localStorage.getItem('Token');
     if (storedToken) {
       setToken(storedToken);
@@ -123,7 +149,35 @@ const Navbar = () => {
       } catch (error) {
         console.error('Invalid token', error);
       }
-    }
+      } else {
+        setToken(null);
+        setUserEmail(null);
+        setIsAdmin(null);
+      }
+    };
+
+    // Check auth on mount
+    checkAuth();
+
+    // Listen for auth changes
+    const handleAuthChange = () => {
+      checkAuth();
+    };
+
+    // Listen for custom auth events
+    window.addEventListener('authChange', handleAuthChange);
+    
+    // Listen for storage changes (when token is updated in another tab)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'Token') {
+        checkAuth();
+      }
+    });
+
+    return () => {
+      window.removeEventListener('authChange', handleAuthChange);
+      window.removeEventListener('storage', handleAuthChange);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -132,72 +186,117 @@ const Navbar = () => {
     setUserEmail(null);
     setIsAdmin(null);
     removeAccessTokenCookie();
+    // Dispatch custom event to notify other components of logout
+    window.dispatchEvent(new CustomEvent('authChange'));
     router.push('/login');
   };
 
+  const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const query = searchText.trim();
+    if (query.length > 0) {
+      router.push(`/flashsale?query=${encodeURIComponent(query)}`);
+    }
+  };
+
+  const isActive = (href: string) => {
+    if (!pathname) return false;
+    return pathname.startsWith(href);
+  };
+
   return (
-    <AppBar position="static" variant="outlined" sx={{ backgroundColor: "black" }}>
+    <AppBar position="sticky" color="default" elevation={1}>
       <Container maxWidth="lg">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
+        <Toolbar disableGutters sx={{ gap: 2 }}>
+          <Box
             component="a"
             href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'roboto',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
+              alignItems: 'center',
               textDecoration: 'none',
             }}
           >
-            <Typography
-              fontSize="27px"
-              fontWeight={550}
-              sx={{ color: '#ff9a00' }}
-              color="warning"
-            >
-              TechRubix
-            </Typography>
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <Image
+              src="/images/wlogo.png"
+              alt="TechRubix Logo"
+              width={100}
+              height={100}
+            />
+            <Typography variant="h5" sx={{ fontWeight: 700}}>TechRubix</Typography>
+          </Box>
+          <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
+              onClick={toggleDrawer(true)}
+              color="primary"
             >
               <MenuIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
-            >
+            <Drawer anchor="left" open={mobileOpen} onClose={toggleDrawer(false)}>
+              <Box sx={{ width: 280 }} role="presentation" onClick={toggleDrawer(false)}>
+                <Box sx={{ p: 2, display: 'flex', alignItems: 'center', mb: 2, justifyContent: 'center' }}>
+                  <Image
+                    src="/images/wlogo.png"
+                    alt="TechRubix Logo"
+                    width={140}
+                    height={140}
+                  />
+                </Box>
+                <Box sx={{ p: 2 }}>
+                  <form onSubmit={submitSearch}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      placeholder="Search products"
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </form>
+                </Box>
+                <Divider />
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton component={Link} href="/" selected={pathname === "/"}>
+                      <ListItemIcon><HomeOutlinedIcon /></ListItemIcon>
+                      <ListItemText primary="Home" />
+                    </ListItemButton>
+                  </ListItem>
               {entries.map(([key, value]) => (
-                <Link href={`/${value}`} key={key}>
-                  <MenuItem key={key} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{key}</Typography>
-                  </MenuItem>
-                </Link>
-              ))}
-            </Menu>
+                    <ListItem key={key} disablePadding>
+                      <ListItemButton component={Link} href={`/${value}`} selected={isActive(`/${value}`)}>
+                        <ListItemIcon>
+                          {key === 'Products' && <BoltOutlinedIcon />}
+                          {key === 'About Us' && <InfoOutlinedIcon />}
+                          {key === 'Contact Us' && <ContactSupportOutlinedIcon />}
+                        </ListItemIcon>
+                        <ListItemText primary={key} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                  {/* Cart Icon in mobile menu */}
+                  <ListItem disablePadding>
+                    <ListItemButton component={Link} href="/cart">
+                      <ListItemIcon>
+                        <AddShoppingCartIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Shopping Cart" />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </Box>
+            </Drawer>
           </Box>
           <Typography
             variant="h5"
@@ -211,33 +310,49 @@ const Navbar = () => {
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: 'primary.main',
               textDecoration: 'none',
             }}
           >
             <Typography
               fontSize="27px"
               fontWeight={550}
-              sx={{ color: '#ff9a00' }}
-              color="warning"
+              sx={{ color: 'primary.main' }}
             >
               TechRubix
             </Typography>
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 0.5, alignItems: 'center' }}>
             {entries.map(([key, value]) => (
-              <Link href={`/${value}`} key={key}>
                 <Button
                   key={key}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                component={Link}
+                href={`/${value}`}
+                variant={isActive(`/${value}`) ? 'outlined' : 'text'}
+                color={isActive(`/${value}`) ? 'primary' : 'inherit'}
+                sx={{
+                  my: 1,
+                  px: 2,
+                  borderRadius: 2,
+                  textTransform: 'none',
+                }}
                 >
                   {key}
                 </Button>
-              </Link>
             ))}
+            {/* Cart Icon positioned after Contact Us */}
+            <IconButton component={Link} href="/cart" color="primary" sx={{ ml: 2 }}>
+              <Badge badgeContent={0} color="error">
+                <AddShoppingCartIcon />
+              </Badge>
+            </IconButton>
           </Box>
-          <h1>{userEmail}</h1> &nbsp;&nbsp;
-          {token !== null ? ( // Conditionally render based on the token state
+          {isClient && userEmail && (
+            <Typography variant="body2" sx={{ mr: 1, display: { xs: 'none', md: 'block' }}}>{userEmail}</Typography>
+          )}
+          {!isClient ? (
+            <Box sx={{ width: 40, height: 40 }} /> // Placeholder to prevent layout shift
+          ) : token !== null ? ( // Conditionally render based on the token state
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -323,7 +438,7 @@ const Navbar = () => {
             </Box>
           ) : (
             <Link href="/login">
-              <Button sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button>
+              <Button variant="contained" disableElevation sx={{ my: 1 }}>Login</Button>
             </Link>
           )}
         </Toolbar>

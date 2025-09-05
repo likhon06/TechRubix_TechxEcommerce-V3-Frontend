@@ -28,7 +28,25 @@ import Link from 'next/link';
 import { useAdminCheckQuery } from '@/redux/features/isadmin.check';
 import { jwtDecode } from 'jwt-decode';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import StoreIcon from '@mui/icons-material/Store';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 import { Button, Chip } from '@mui/material';
+
+// Create a context for drawer state
+const DrawerContext = React.createContext<{
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}>({
+  open: true,
+  setOpen: () => {}
+});
+
+export const useDrawerContext = () => React.useContext(DrawerContext);
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -113,14 +131,23 @@ export const DDrawer = () => {
     const theme = useTheme();
     const [userEmail, setUserEmail] = React.useState<string | null>(null);
     const [userRole, setUserRole] = React.useState<string | null>(null);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
     const handleDrawerOpen = () => {
         setOpen(true);
     };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
+    const toggleDrawer = () => {
+        setOpen(!open);
     };
 
     React.useEffect(() => {
@@ -133,137 +160,250 @@ export const DDrawer = () => {
                 } = jwtDecode(storedToken);
                 setUserEmail(decodedToken?.email);
                 setUserRole(decodedToken?.role);
-                console.log('Role:', decodedToken.role);
-                console.log('Email:', decodedToken.email);
             } catch (error) {
                 console.error('Invalid token', error);
             }
         }
     }, []);
     
-    console.log(userRole);
-    return (
-        <Box sx={{ display: 'flex', justifyContent: 'between' }}>
-            <CssBaseline />
-            <AppBar position="fixed" open={open}>
-                <Toolbar sx={{ backgroundColor: 'black', paddingTop: '5px', display: 'flex' }}>
+    const drawerContent = (
+        <Box>
+            <DrawerHeader>
+                <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    width: '100%', 
+                    px: 2,
+                    justifyContent: open ? 'space-between' : 'center'
+                }}>
+                    {open && (
+                        <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                            {userRole === 'admin' ? 'Admin Panel' : 'User Panel'}
+                        </Typography>
+                    )}
                     <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
+                        onClick={open ? handleDrawerClose : handleDrawerOpen} 
+                        size="small"
                         sx={{
-                            marginRight: 5,
-                            ...(open && { display: 'none' }),
-
+                            backgroundColor: 'primary.main',
+                            color: 'white',
+                            '&:hover': {
+                                backgroundColor: 'primary.dark'
+                            }
                         }}
                     >
-                        <MenuIcon />
+                        {open ? (
+                            theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />
+                        ) : (
+                            theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />
+                        )}
                     </IconButton>
-                    <div className='block'>
-                        <h1 className=''>{userEmail}</h1>
-                        <Button sx={{ fontSize: '11px' }} color="primary">{userRole === 'admin' ? 'Admin Dashboard' : 'User Dashboard'}</Button>
-                    </div>
-
-                </Toolbar>
-
-            </AppBar>
-            <Drawer variant="permanent" open={open}>
-                <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
+                </Box>
                 </DrawerHeader>
                 <Divider />
-                {
+            
+            {/* User Info - Only show when drawer is open */}
+            {open && (
+                <>
+                    <Box sx={{ p: 2, backgroundColor: 'grey.50' }}>
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                            Welcome back,
+                        </Typography>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                            {userEmail}
+                        </Typography>
+                        <Chip 
+                            label={userRole === 'admin' ? 'Administrator' : 'User'} 
+                            color={userRole === 'admin' ? 'primary' : 'default'} 
+                            size="small" 
+                        />
+                    </Box>
+                    <Divider />
+                </>
+            )}
 
-                    userRole === 'admin' ? (
-                        <List>
-                            {['Dashboard', 'Add Products', 'All Product', 'All User', 'Home'].map((text, index) => (
-                                <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+            {/* Navigation Menu */}
+            {userRole === 'admin' ? (
+                <List sx={{ px: 1 }}>
+                    {[
+                        { text: 'Dashboard', icon: <DashboardIcon />, href: '/dashboard/admin' },
+                        { text: 'Add Products', icon: <AddIcon />, href: '/dashboard/admin/products/add-products' },
+                        { text: 'All Products', icon: <InventoryIcon />, href: '/dashboard/admin/products' },
+                        { text: 'All Users', icon: <PeopleIcon />, href: '/dashboard/admin/all-users' },
+                        { text: 'Analytics', icon: <AnalyticsIcon />, href: '/dashboard/admin/analytics' },
+                        { text: 'Orders', icon: <ShoppingCartIcon />, href: '/dashboard/admin/orders' },
+                        { text: 'Settings', icon: <SettingsIcon />, href: '/dashboard/admin/settings' },
+                        { text: 'Home', icon: <HomeIcon />, href: '/' }
+                    ].map((item, index) => (
+                        <ListItem key={item.text} disablePadding sx={{ display: 'block', mb: 0.5 }}>
                                     <ListItemButton
+                                component={Link}
+                                href={item.href}
                                         sx={{
                                             minHeight: 48,
                                             justifyContent: open ? 'initial' : 'center',
                                             px: 2.5,
-                                        }}
-                                    >
-                                        {
+                                    borderRadius: 2,
+                                    '&:hover': {
+                                        backgroundColor: 'primary.light',
+                                        color: 'white',
+                                        '& .MuiListItemIcon-root': {
+                                            color: 'white',
+                                        }
+                                    }
+                                }}
+                            >
                                             <ListItemIcon
                                                 sx={{
                                                     minWidth: 0,
                                                     mr: open ? 3 : 'auto',
                                                     justifyContent: 'center',
-                                                }}
-                                            >
-                                                {
-                                                    index === 0 && <Link href={'/dashboard/admin'}><DashboardIcon /></Link>
-                                                }
-                                                {
-                                                    index === 1 && <Link href={'/dashboard/admin/products/add-products'}><AddIcon /></Link>
-                                                }
-                                                {
-                                                    index === 2 && <Link href={'/dashboard/admin/products'}><CategoryIcon /></Link>
-                                                }
-                                                {
-                                                    index === 3 && <Link href={'/dashboard/admin/all-users'}><PeopleIcon /></Link>
-                                                }
-                                                {
-                                                    index === 4 && <Link href={'/'}><HomeIcon /></Link>
-                                                }
-
+                                        color: 'text.secondary'
+                                    }}
+                                >
+                                    {item.icon}
                                             </ListItemIcon>
-
+                                <ListItemText 
+                                    primary={item.text} 
+                                    sx={{ 
+                                        opacity: open ? 1 : 0,
+                                        '& .MuiListItemText-primary': {
+                                            fontSize: '0.875rem',
+                                            fontWeight: 500
                                         }
-                                        <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                    }} 
+                                />
                                     </ListItemButton>
                                 </ListItem>
                             ))}
                         </List>
                     ) : (
-                        <List>
-                            {['Dashboard', 'My Orders', 'Home'].map((text, index) => (
-                                <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                <List sx={{ px: 1 }}>
+                    {[
+                        { text: 'Dashboard', icon: <DashboardIcon />, href: '/dashboard/user' },
+                        { text: 'My Orders', icon: <ShoppingCartIcon />, href: '/dashboard/user/my-orders' },
+                        { text: 'Profile', icon: <PeopleIcon />, href: '/profile' },
+                        { text: 'Settings', icon: <SettingsIcon />, href: '/dashboard/user/settings' },
+                        { text: 'Home', icon: <HomeIcon />, href: '/' }
+                    ].map((item, index) => (
+                        <ListItem key={item.text} disablePadding sx={{ display: 'block', mb: 0.5 }}>
                                     <ListItemButton
+                                component={Link}
+                                href={item.href}
                                         sx={{
                                             minHeight: 48,
                                             justifyContent: open ? 'initial' : 'center',
                                             px: 2.5,
-                                        }}
-                                    >
-                                        {
+                                    borderRadius: 2,
+                                    '&:hover': {
+                                        backgroundColor: 'primary.light',
+                                        color: 'white',
+                                        '& .MuiListItemIcon-root': {
+                                            color: 'white',
+                                        }
+                                    }
+                                }}
+                            >
                                             <ListItemIcon
                                                 sx={{
                                                     minWidth: 0,
                                                     mr: open ? 3 : 'auto',
                                                     justifyContent: 'center',
-                                                }}
-                                            >
-                                                {
-                                                    index === 0 && <Link href={'/dashboard/user'}><DashboardIcon /></Link>
-                                                }
-                                                {
-                                                    index === 1 && <Link href={'/dashboard/user/my-orders'}><ListAltIcon /></Link>
-                                                }
-                                                {
-                                                    index === 2 && <Link href={'/'}><HomeIcon /></Link>
-                                                }
+                                        color: 'text.secondary'
+                                    }}
+                                >
+                                    {item.icon}
                                             </ListItemIcon>
-
-
+                                <ListItemText 
+                                    primary={item.text} 
+                                    sx={{ 
+                                        opacity: open ? 1 : 0,
+                                        '& .MuiListItemText-primary': {
+                                            fontSize: '0.875rem',
+                                            fontWeight: 500
                                         }
-                                        <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                    }} 
+                                />
                                     </ListItemButton>
                                 </ListItem>
                             ))}
                         </List>
-                    )
-                }
-            </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <DrawerHeader />
-
-            </Box>
+            )}
         </Box>
+    );
+
+    return (
+        <DrawerContext.Provider value={{ open, setOpen }}>
+            <CssBaseline />
+            
+            {/* Mobile AppBar */}
+            <AppBar 
+                position="fixed" 
+                sx={{ 
+                    display: { xs: 'block', sm: 'none' },
+                    zIndex: theme.zIndex.drawer + 1,
+                    backgroundColor: 'primary.main'
+                }}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2 }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                        {userRole === 'admin' ? 'Admin Dashboard' : 'User Dashboard'}
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+
+            {/* Mobile Drawer */}
+            <MuiDrawer
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                    keepMounted: true, // Better open performance on mobile.
+                }}
+                sx={{
+                    display: { xs: 'block', sm: 'none' },
+                    '& .MuiDrawer-paper': { 
+                        boxSizing: 'border-box', 
+                        width: drawerWidth,
+                        backgroundColor: 'background.paper'
+                    },
+                }}
+            >
+                {drawerContent}
+            </MuiDrawer>
+
+            {/* Desktop Drawer */}
+            <Drawer 
+                variant="permanent" 
+                open={open}
+                sx={{
+                    display: { xs: 'none', sm: 'block' },
+                    '& .MuiDrawer-paper': {
+                        boxSizing: 'border-box',
+                        width: open ? drawerWidth : `calc(${theme.spacing(7)} + 1px)`,
+                        height: '100vh',
+                        backgroundColor: 'background.paper',
+                        borderRight: '1px solid',
+                        borderColor: 'divider',
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        zIndex: theme.zIndex.drawer
+                    },
+                }}
+            >
+                {drawerContent}
+            </Drawer>
+
+        </DrawerContext.Provider>
     );
 }
