@@ -504,67 +504,53 @@ const FlashProductsPage = () => {
               </Typography>
             </Box>
 
-            {/* Sort and View Options */}
-            <Box sx={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center', 
-              mb: 3,
-              flexWrap: 'wrap',
-              gap: 2,
-              p: 2,
-              backgroundColor: 'grey.50',
-              borderRadius: 2,
-              border: '1px solid',
-              borderColor: 'divider'
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-                <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-                  Sort by:
-                </Typography>
-                <FormControl size="small" sx={{ minWidth: 200 }}>
-                  <Select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    displayEmpty
-                    sx={{
-                      backgroundColor: 'white',
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'primary.main'
-                      },
-                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'primary.dark'
-                      }
-                    }}
-                  >
-                    {sortOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <Sort fontSize="small" />
-                          {option.label}
-                        </Box>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
+            {/* Sort and View Options - Desktop Only */}
+            {!isMobile && (
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                mb: 3,
+                flexWrap: 'wrap',
+                gap: 2,
+                p: 2,
+                backgroundColor: 'grey.50',
+                borderRadius: 2,
+                border: '1px solid',
+                borderColor: 'divider'
+              }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                    Sort by:
+                  </Typography>
+                  <FormControl size="small" sx={{ minWidth: 200 }}>
+                    <Select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      displayEmpty
+                      sx={{
+                        backgroundColor: 'white',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'primary.main'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'primary.dark'
+                        }
+                      }}
+                    >
+                      {sortOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Sort fontSize="small" />
+                            {option.label}
+                          </Box>
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                {isMobile ? (
-                  <Button
-                    variant="contained"
-                    startIcon={<FilterList />}
-                    onClick={() => setFilterDrawerOpen(true)}
-                    sx={{
-                      backgroundColor: 'primary.main',
-                      '&:hover': {
-                        backgroundColor: 'primary.dark'
-                      }
-                    }}
-                  >
-                    Filters ({getActiveFiltersCount()})
-                  </Button>
-                ) : (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Button
                     variant="outlined"
                     startIcon={<Tune />}
@@ -573,9 +559,9 @@ const FlashProductsPage = () => {
                   >
                     {showFilters ? 'Hide Filters' : 'Show Filters'}
                   </Button>
-                )}
+                </Box>
               </Box>
-            </Box>
+            )}
 
             {/* Error State */}
             {error && (

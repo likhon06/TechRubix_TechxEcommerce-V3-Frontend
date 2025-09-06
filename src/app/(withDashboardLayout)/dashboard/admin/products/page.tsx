@@ -1,4 +1,5 @@
 "use client"
+import Image from 'next/image';
 import { 
     Box, 
     Button, 
@@ -124,6 +125,8 @@ const ProductShowPage = () => {
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+    const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
     useEffect(() => {
         const fetchData = async () => {
@@ -319,12 +322,31 @@ const ProductShowPage = () => {
         <Container maxWidth="xl" sx={{ py: 4 }}>
             {/* Header */}
             <Box sx={{ mb: 4 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                <Box sx={{ 
+                    display: 'flex', 
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    justifyContent: 'space-between', 
+                    alignItems: { xs: 'flex-start', sm: 'center' },
+                    gap: { xs: 2, sm: 0 },
+                    mb: 3 
+                }}>
                     <Box>
-                        <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 1 }}>
+                        <Typography 
+                            variant={isMobile ? "h5" : "h4"} 
+                            component="h1" 
+                            sx={{ 
+                                fontWeight: 700, 
+                                mb: 1,
+                                fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' }
+                            }}
+                        >
                             Product Management
                         </Typography>
-                        <Typography variant="body1" color="text.secondary">
+                        <Typography 
+                            variant="body1" 
+                            color="text.secondary"
+                            sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
+                        >
                             Manage your store&apos;s product inventory
                         </Typography>
                     </Box>
@@ -333,27 +355,41 @@ const ProductShowPage = () => {
                         href="/dashboard/admin/products/add-products"
                         variant="contained"
                         startIcon={<Add />}
-                        sx={{ minWidth: 160 }}
+                        sx={{ 
+                            minWidth: { xs: '100%', sm: 160 },
+                            width: { xs: '100%', sm: 'auto' },
+                            height: { xs: 44, sm: 36 }
+                        }}
                     >
                         Add Product
                     </Button>
                 </Box>
 
                 {/* Search and Filters */}
-                <Paper sx={{ p: 3, mb: 3 }}>
-                    <Grid container spacing={2} alignItems="center">
+                <Paper sx={{ 
+                    p: { xs: 2, sm: 3 }, 
+                    mb: 3,
+                    borderRadius: { xs: 2, sm: 1 }
+                }}>
+                    <Grid container spacing={{ xs: 2, sm: 2 }} alignItems="center">
                         <Grid item xs={12} md={6}>
                             <TextField
                                 fullWidth
                                 placeholder="Search products..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
+                                size={isMobile ? "small" : "medium"}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <Search />
+                                            <Search fontSize={isMobile ? "small" : "medium"} />
                                         </InputAdornment>
                                     )
+                                }}
+                                sx={{
+                                    '& .MuiInputBase-input': {
+                                        fontSize: { xs: '0.875rem', sm: '1rem' }
+                                    }
                                 }}
                             />
                         </Grid>
@@ -364,12 +400,18 @@ const ProductShowPage = () => {
                                 label="Category"
                                 value={filterCategory}
                                 onChange={(e) => setFilterCategory(e.target.value)}
+                                size={isMobile ? "small" : "medium"}
                                 SelectProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <Category />
+                                            <Category fontSize={isMobile ? "small" : "medium"} />
                                         </InputAdornment>
                                     )
+                                }}
+                                sx={{
+                                    '& .MuiInputBase-input': {
+                                        fontSize: { xs: '0.875rem', sm: '1rem' }
+                                    }
                                 }}
                             >
                                 {categories.map((category) => (
@@ -380,11 +422,20 @@ const ProductShowPage = () => {
                             </TextField>
                         </Grid>
                         <Grid item xs={12} md={2}>
-                            <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                gap: 1, 
+                                justifyContent: { xs: 'center', md: 'flex-end' },
+                                mt: { xs: 1, md: 0 }
+                            }}>
                                 <Chip
                                     label={`${filteredProducts.length} products`}
                                     color="primary"
                                     variant="outlined"
+                                    size={isMobile ? "small" : "medium"}
+                                    sx={{
+                                        fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                                    }}
                                 />
                             </Box>
                         </Grid>
@@ -591,9 +642,11 @@ const ProductShowPage = () => {
                                                         </Typography>
                                                         <Grid container spacing={2}>
                                                             <Grid item xs={12} md={6}>
-                                                                <img 
+                                                                <Image 
                                                                     src={product.image} 
                                                                     alt={product.name}
+                                                                    width={400}
+                                                                    height={200}
                                                                     style={{ 
                                                                         width: '100%', 
                                                                         height: '200px', 
@@ -682,9 +735,11 @@ const ProductShowPage = () => {
                         <DialogContent>
                             <Grid container spacing={3}>
                                 <Grid item xs={12} md={6}>
-                                    <img 
+                                    <Image 
                                         src={selectedProduct.image} 
                                         alt={selectedProduct.name}
+                                        width={400}
+                                        height={200}
                                         style={{ 
                                             width: '100%', 
                                             height: '200px', 

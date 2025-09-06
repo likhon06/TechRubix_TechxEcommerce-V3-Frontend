@@ -144,15 +144,7 @@ const Footer = () => {
             {/* Company Info */}
             <Grid item xs={12} md={4}>
               <Box sx={{ mb: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Image
-                    src="/images/wlogo.png"
-                    alt="TechRubix Logo"
-                    width={140}
-                    height={140}
-                  />
-                </Box>
-                <Typography variant="h5" sx={{ fontWeight: 700}}>TechRubix</Typography>
+                <Typography variant="h5" sx={{ fontWeight: 700}}>TRX</Typography>
 
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
                   Your trusted destination for the latest technology products. 

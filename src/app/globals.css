@@ -7,3 +7,44 @@
 body {
      font-family: "Oswald", sans-serif;;
 }
+
+/* Custom Hero Carousel Styles */
+.hero-nav-btn {
+  position: absolute;
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  right: 20px;
+}
+
+.hero-nav-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.hero-nav-btn--prev {
+  top: 10px;
+}
+
+.hero-nav-btn--next {
+  bottom: 20px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hero-nav-btn {
+    width: 40px;
+    height: 40px;
+    right: 15px;
+  }
+}

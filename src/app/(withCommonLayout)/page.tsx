@@ -13,7 +13,6 @@ const HomePage = async () => {
     }
   });
   const flashsaledata = await resOne.json();
-  console.log(flashsaledata);
 
   const resTwo = await fetch('https://tech-rubix-backend.vercel.app/top-products', {
     next: {

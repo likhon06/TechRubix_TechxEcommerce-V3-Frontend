@@ -24,9 +24,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'; // profile
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'; // account
 import DashboardIcon from '@mui/icons-material/Dashboard'; // dashboard
@@ -37,6 +34,7 @@ import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import BoltOutlinedIcon from '@mui/icons-material/BoltOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ContactSupportOutlinedIcon from '@mui/icons-material/ContactSupportOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import { removeAccessTokenCookie } from "@/Components/RemoveCookieToken/RemoveCookieToken";
 import Image from 'next/image';
 
@@ -105,7 +103,6 @@ const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
-  const [searchText, setSearchText] = React.useState<string>("");
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -129,10 +126,13 @@ const Navbar = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
+    // Mark as hydrated after first render
+    setIsHydrated(true);
     setIsClient(true);
     
     const checkAuth = () => {
@@ -191,13 +191,6 @@ const Navbar = () => {
     router.push('/login');
   };
 
-  const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const query = searchText.trim();
-    if (query.length > 0) {
-      router.push(`/flashsale?query=${encodeURIComponent(query)}`);
-    }
-  };
 
   const isActive = (href: string) => {
     if (!pathname) return false;
@@ -218,13 +211,7 @@ const Navbar = () => {
               textDecoration: 'none',
             }}
           >
-            <Image
-              src="/images/wlogo.png"
-              alt="TechRubix Logo"
-              width={100}
-              height={100}
-            />
-            <Typography variant="h5" sx={{ fontWeight: 700}}>TechRubix</Typography>
+            <Typography variant="h5" sx={{ fontWeight: 700}}>TRX</Typography>
           </Box>
           <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -238,34 +225,31 @@ const Navbar = () => {
               <MenuIcon />
             </IconButton>
             <Drawer anchor="left" open={mobileOpen} onClose={toggleDrawer(false)}>
-              <Box sx={{ width: 280 }} role="presentation" onClick={toggleDrawer(false)}>
-                <Box sx={{ p: 2, display: 'flex', alignItems: 'center', mb: 2, justifyContent: 'center' }}>
-                  <Image
-                    src="/images/wlogo.png"
-                    alt="TechRubix Logo"
-                    width={140}
-                    height={140}
-                  />
+              <Box sx={{ width: 280 }} role="presentation">
+                {/* Close Button Header */}
+                <Box sx={{ 
+                  p: 2, 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  borderBottom: '1px solid',
+                  borderColor: 'divider'
+                }}>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                    Menu
+                  </Typography>
+                  <IconButton 
+                    onClick={toggleDrawer(false)}
+                    sx={{ 
+                      color: 'text.primary',
+                      '&:hover': {
+                        backgroundColor: 'action.hover'
+                      }
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
                 </Box>
-                <Box sx={{ p: 2 }}>
-                  <form onSubmit={submitSearch}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      placeholder="Search products"
-                      value={searchText}
-                      onChange={(e) => setSearchText(e.target.value)}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </form>
-                </Box>
-                <Divider />
                 <List>
                   <ListItem disablePadding>
                     <ListItemButton component={Link} href="/" selected={pathname === "/"}>
@@ -347,10 +331,10 @@ const Navbar = () => {
               </Badge>
             </IconButton>
           </Box>
-          {isClient && userEmail && (
+          {isHydrated && isClient && userEmail && (
             <Typography variant="body2" sx={{ mr: 1, display: { xs: 'none', md: 'block' }}}>{userEmail}</Typography>
           )}
-          {!isClient ? (
+          {!isHydrated ? (
             <Box sx={{ width: 40, height: 40 }} /> // Placeholder to prevent layout shift
           ) : token !== null ? ( // Conditionally render based on the token state
             <Box sx={{ flexGrow: 0 }}>

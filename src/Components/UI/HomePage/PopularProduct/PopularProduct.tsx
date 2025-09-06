@@ -10,13 +10,17 @@ const PopularProduct = ({ populardata }: { populardata: any }) => {
         <Box sx={{ mt: 12, mb: 4 }}>
             <Container maxWidth="xl">
                 <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    mb={4}
-                    px={2}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: { xs: 'column', md: 'row' },
+                        justifyContent: { xs: 'flex-start', md: 'space-between' },
+                        alignItems: { xs: 'flex-start', md: 'center' },
+                        mb: 4,
+                        px: 2,
+                        gap: { xs: 3, md: 0 }
+                    }}
                 >
-                    <Box>
+                    <Box sx={{ flex: 1 }}>
                         <Typography 
                             variant='h4'
                             fontWeight={700}
@@ -25,7 +29,8 @@ const PopularProduct = ({ populardata }: { populardata: any }) => {
                                 backgroundClip: 'text',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
-                                mb: 1
+                                mb: 1,
+                                fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
                             }}
                         >
                             Most Popular Products
@@ -33,37 +38,47 @@ const PopularProduct = ({ populardata }: { populardata: any }) => {
                         <Typography 
                             variant="body1" 
                             color="text.secondary"
-                            sx={{ maxWidth: 500 }}
+                            sx={{ 
+                                maxWidth: { xs: '100%', md: 500 },
+                                fontSize: { xs: '0.875rem', sm: '1rem' }
+                            }}
                         >
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fringilla nunc in molestie feugiat.
                         </Typography>
                     </Box>
 
-                    <Link href="/products" style={{ textDecoration: 'none' }}>
-                        <Button
-                            variant="contained"
-                            endIcon={<MdOutlineKeyboardArrowRight />}
-                            sx={{
-                                px: 4,
-                                py: 1.5,
-                                borderRadius: 6,
-                                fontSize: '1.1rem',
-                                fontWeight: 600,
-                                background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
-                                boxShadow: 3,
-                                '&:hover': {
-                                    background: 'linear-gradient(45deg, #1565c0, #1976d2)',
-                                    boxShadow: 6,
-                                    transform: 'translateY(-2px)'
-                                },
-                                transition: 'all 0.3s ease-in-out'
-                            }}
-                        >
-                            View All
-                        </Button>
-                    </Link>
+                    <Box sx={{ 
+                        alignSelf: { xs: 'stretch', md: 'auto' },
+                        mt: { xs: 0, md: 0 }
+                    }}>
+                        <Link href="/products" style={{ textDecoration: 'none' }}>
+                            <Button
+                                variant="contained"
+                                endIcon={<MdOutlineKeyboardArrowRight />}
+                                sx={{
+                                    width: { xs: '100%', md: 'auto' },
+                                    px: { xs: 3, md: 4 },
+                                    py: { xs: 1.25, md: 1.5 },
+                                    borderRadius: 6,
+                                    fontSize: { xs: '1rem', md: '1.1rem' },
+                                    fontWeight: 600,
+                                    background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
+                                    boxShadow: 3,
+                                    minWidth: { xs: 'auto', md: '140px' },
+                                    '&:hover': {
+                                        background: 'linear-gradient(45deg, #1565c0, #1976d2)',
+                                        boxShadow: 6,
+                                        transform: 'translateY(-2px)'
+                                    },
+                                    transition: 'all 0.3s ease-in-out'
+                                }}
+                            >
+                                View All
+                            </Button>
+                        </Link>
+                    </Box>
                 </Box>
-                <Grid container spacing={3} px={2}>
+                <Grid container spacing={{ xs: 2, sm: 3 }} px={{ xs: 1, sm: 2 }}>
                     {populardata?.slice(0, 4).map((pdata: any) => (
                         <Grid item xs={12} sm={6} md={3} key={pdata._id}>
                             <PopularProductsCard pdata={pdata} />

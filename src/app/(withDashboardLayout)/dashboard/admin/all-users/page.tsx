@@ -47,7 +47,6 @@ import {
     Visibility, 
     Search, 
     FilterList, 
-    PersonAdd,
     MoreVert,
     AdminPanelSettings,
     Person,
@@ -288,7 +287,7 @@ const AllUsersPage = () => {
 
     const adminCount = allUsers.filter(user => user.role === 'admin').length;
     const userCount = allUsers.filter(user => user.role === 'user').length;
-    const activeCount = allUsers.filter(user => user.is_active !== false).length;
+    const activeCount = allUsers.filter(user => user.role === 'admin' || user.is_active !== false).length;
 
     if (loading) {
         return (
@@ -307,22 +306,13 @@ const AllUsersPage = () => {
         <Container maxWidth="xl" sx={{ py: 4 }}>
             {/* Header */}
             <Box sx={{ mb: 4 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                    <Box>
+                <Box sx={{ mb: 3 }}>
                         <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 1 }}>
                             User Management
                         </Typography>
                         <Typography variant="body1" color="text.secondary">
-                            Manage your store&apos;s users and their permissions
+                        Manage your store&apos;s users and their permissions
                         </Typography>
-                    </Box>
-                    <Button
-                        variant="contained"
-                        startIcon={<PersonAdd />}
-                        sx={{ minWidth: 160 }}
-                    >
-                        Add User
-                    </Button>
                 </Box>
 
                 {/* Stats Cards */}
@@ -467,7 +457,7 @@ const AllUsersPage = () => {
                                 const isItemSelected = isSelected(user.id);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
-                                return (
+    return (
                                     <TableRow
                                         key={user.id}
                                         hover
@@ -529,10 +519,10 @@ const AllUsersPage = () => {
                                         </TableCell>
                                         <TableCell>
                                             <Chip
-                                                label={user.is_active ? 'Active' : 'Inactive'}
-                                                color={user.is_active ? 'success' : 'error'}
+                                                label={user.role === 'admin' ? 'Active' : (user.is_active ? 'Active' : 'Inactive')}
+                                                color={user.role === 'admin' ? 'success' : (user.is_active ? 'success' : 'error')}
                                                 size="small"
-                                                icon={user.is_active ? <CheckCircle /> : <Block />}
+                                                icon={user.role === 'admin' ? <CheckCircle /> : (user.is_active ? <CheckCircle /> : <Block />)}
                                             />
                                         </TableCell>
                                         <TableCell>
@@ -602,15 +592,9 @@ const AllUsersPage = () => {
                     <Typography variant="h6" color="text.secondary" sx={{ mb: 1 }}>
                         No users found
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
                         Try adjusting your search criteria
                     </Typography>
-                    <Button
-                        variant="contained"
-                        startIcon={<PersonAdd />}
-                    >
-                        Add Your First User
-                    </Button>
                 </Box>
             )}
 
@@ -679,8 +663,8 @@ const AllUsersPage = () => {
                                 <Grid item xs={12} md={6}>
                                     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                                         <Chip 
-                                            label={selectedUser.is_active ? 'Active' : 'Inactive'} 
-                                            color={selectedUser.is_active ? 'success' : 'error'} 
+                                            label={selectedUser.role === 'admin' ? 'Active' : (selectedUser.is_active ? 'Active' : 'Inactive')} 
+                                            color={selectedUser.role === 'admin' ? 'success' : (selectedUser.is_active ? 'success' : 'error')} 
                                         />
                                         <Chip 
                                             label={selectedUser.role === 'admin' ? 'Administrator' : 'User'} 

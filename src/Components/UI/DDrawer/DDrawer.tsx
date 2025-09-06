@@ -1,6 +1,7 @@
 "use client"
 import * as React from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -129,6 +130,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export const DDrawer = () => {
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [userEmail, setUserEmail] = React.useState<string | null>(null);
     const [userRole, setUserRole] = React.useState<string | null>(null);
     const [open, setOpen] = React.useState(true);
@@ -174,36 +176,38 @@ export const DDrawer = () => {
                     alignItems: 'center', 
                     width: '100%', 
                     px: 2,
-                    justifyContent: open ? 'space-between' : 'center'
+                    justifyContent: (open || isMobile) ? 'space-between' : 'center'
                 }}>
-                    {open && (
+                    {(open || isMobile) && (
                         <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
                             {userRole === 'admin' ? 'Admin Panel' : 'User Panel'}
                         </Typography>
                     )}
-                    <IconButton
-                        onClick={open ? handleDrawerClose : handleDrawerOpen} 
-                        size="small"
-                        sx={{
-                            backgroundColor: 'primary.main',
-                            color: 'white',
-                            '&:hover': {
-                                backgroundColor: 'primary.dark'
-                            }
-                        }}
-                    >
-                        {open ? (
-                            theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />
-                        ) : (
-                            theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />
-                        )}
-                    </IconButton>
+                    {!isMobile && (
+                        <IconButton
+                            onClick={open ? handleDrawerClose : handleDrawerOpen} 
+                            size="small"
+                            sx={{
+                                backgroundColor: 'primary.main',
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: 'primary.dark'
+                                }
+                            }}
+                        >
+                            {open ? (
+                                theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />
+                            ) : (
+                                theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />
+                            )}
+                        </IconButton>
+                    )}
                 </Box>
                 </DrawerHeader>
                 <Divider />
             
-            {/* User Info - Only show when drawer is open */}
-            {open && (
+            {/* User Info - Show when drawer is open or on mobile */}
+            {(open || isMobile) && (
                 <>
                     <Box sx={{ p: 2, backgroundColor: 'grey.50' }}>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -241,7 +245,7 @@ export const DDrawer = () => {
                                 href={item.href}
                                         sx={{
                                             minHeight: 48,
-                                            justifyContent: open ? 'initial' : 'center',
+                                            justifyContent: (open || isMobile) ? 'initial' : 'center',
                                             px: 2.5,
                                     borderRadius: 2,
                                     '&:hover': {
@@ -256,7 +260,7 @@ export const DDrawer = () => {
                                             <ListItemIcon
                                                 sx={{
                                                     minWidth: 0,
-                                                    mr: open ? 3 : 'auto',
+                                                    mr: (open || isMobile) ? 3 : 'auto',
                                                     justifyContent: 'center',
                                         color: 'text.secondary'
                                     }}
@@ -266,7 +270,7 @@ export const DDrawer = () => {
                                 <ListItemText 
                                     primary={item.text} 
                                     sx={{ 
-                                        opacity: open ? 1 : 0,
+                                        opacity: (open || isMobile) ? 1 : 0,
                                         '& .MuiListItemText-primary': {
                                             fontSize: '0.875rem',
                                             fontWeight: 500
@@ -292,7 +296,7 @@ export const DDrawer = () => {
                                 href={item.href}
                                         sx={{
                                             minHeight: 48,
-                                            justifyContent: open ? 'initial' : 'center',
+                                            justifyContent: (open || isMobile) ? 'initial' : 'center',
                                             px: 2.5,
                                     borderRadius: 2,
                                     '&:hover': {
@@ -307,7 +311,7 @@ export const DDrawer = () => {
                                             <ListItemIcon
                                                 sx={{
                                                     minWidth: 0,
-                                                    mr: open ? 3 : 'auto',
+                                                    mr: (open || isMobile) ? 3 : 'auto',
                                                     justifyContent: 'center',
                                         color: 'text.secondary'
                                     }}
@@ -317,7 +321,7 @@ export const DDrawer = () => {
                                 <ListItemText 
                                     primary={item.text} 
                                     sx={{ 
-                                        opacity: open ? 1 : 0,
+                                        opacity: (open || isMobile) ? 1 : 0,
                                         '& .MuiListItemText-primary': {
                                             fontSize: '0.875rem',
                                             fontWeight: 500
@@ -394,9 +398,7 @@ export const DDrawer = () => {
                         backgroundColor: 'background.paper',
                         borderRight: '1px solid',
                         borderColor: 'divider',
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
+                        position: 'relative',
                         zIndex: theme.zIndex.drawer
                     },
                 }}

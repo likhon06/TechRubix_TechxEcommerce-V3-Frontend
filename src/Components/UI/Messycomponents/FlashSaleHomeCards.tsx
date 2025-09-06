@@ -24,12 +24,14 @@ import { toast } from 'sonner';
 const FlashSaleHomeCards = ({ fdata }: { fdata: any }) => {
   const [token, setToken] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
   const router = useRouter();
   
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
+    setIsHydrated(true);
     const storedToken = localStorage.getItem('Token');
     if (storedToken) {
       setToken(storedToken);

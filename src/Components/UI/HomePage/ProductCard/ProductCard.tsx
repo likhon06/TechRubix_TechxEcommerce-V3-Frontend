@@ -6,8 +6,6 @@ import FlashSaleHomeCards from '../../Messycomponents/FlashSaleHomeCards'
 
 const ProductCard = ({ flashsaledata }: { flashsaledata: any }) => {
 
-  console.log(flashsaledata);
-
     return (
         <Box sx={{ mt: 8, mb: 4 }}>
             <Container maxWidth="xl">
